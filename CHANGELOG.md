@@ -2,6 +2,8 @@
 
 ## 2026-09-23
 
+- Password gate: Next.js App Router serves the existing EN/PT editor only after an HMAC-SHA256 session cookie (`AUTH_USER` / `AUTH_PASS` / `AUTH_SECRET`). Static `/` rewrite removed so auth cannot be bypassed. Playwright PDF export remains local.
+
 - Vercel static hosting: `vercel.json` rewrite `/` → editor HTML; Deploy section in README (PDF export stays local).
 
 - PDF export: Playwright/Chromium native (`export_cv_pdf.py` + `Exportar_CV_PDF.bat`); html2canvas abandoned as primary engine (left-crop / header alignment fix).

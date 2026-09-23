@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/editor/cv_editor_caio_bilingual.html" }
-  ],
   "headers": [
     {
       "source": "/(.*)",

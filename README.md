@@ -6,19 +6,42 @@
 
 A single-file HTML resume editor with EN | PT switching, live edit/preview, and print-stable PDF export through Playwright Chromium (`page.pdf`). html2canvas / html2pdf is not the primary engine (it cropped the left edge and mishandled flex/grid headers).
 
+The site is a **minimal Next.js App Router** app. Unauthenticated visitors only see `/login`. The editor is served after a valid session cookie.
+
 ## Requirements
 
-- Python 3.10+
+- Node.js 20+ (Next.js app: `npm install` then `npm run dev` / `npm run build`)
+- Python 3.10+ (local PDF export only)
 - Playwright Chromium: `pip install playwright` then `python -m playwright install chromium`
 - Windows: optional helper `editor/Exportar_CV_PDF.bat` (falls back to Microsoft Edge channel when Chromium is missing)
 
+## Auth (required to use the editor)
+
+The editor HTML is not public. `middleware.ts` redirects to `/login` unless the request carries a valid HMAC-SHA256 session cookie.
+
+Set these environment variables in the host (local `.env.local`, or Vercel Project Settings → Environment Variables). **Do not commit values.**
+
+| Name | Purpose |
+| --- | --- |
+| `AUTH_USER` | Login username |
+| `AUTH_PASS` | Login password |
+| `AUTH_SECRET` | Long random string used to sign the session cookie |
+
+Cookie flags: HttpOnly, Secure, SameSite=Lax, Path=/, Max-Age 8 hours.
+
+Sign out: `GET` or `POST` `/api/logout`.
+
+Copy [`.env.example`](.env.example) to `.env.local` and fill in values locally. Never put real credentials in git, README, or examples.
+
 ## Quick start
 
-1. Open `editor/cv_editor_caio_bilingual.html` in Chrome or Edge.
-2. Use **EN** / **PT** in the toolbar. **Edit** enables contenteditable fields; **Preview** shows the print layout. **Save** writes to `localStorage`; use Export/Import JSON for backups.
-3. After changing the HTML on disk, hard-refresh (**Ctrl+F5**).
+1. `npm install`
+2. Create `.env.local` with `AUTH_USER`, `AUTH_PASS`, and `AUTH_SECRET` (names only here — set your own values).
+3. `npm run dev` and open `http://localhost:3000`. Sign in, then the EN/PT editor loads.
+4. Use **EN** / **PT** in the toolbar. **Edit** enables contenteditable fields; **Preview** shows the print layout. **Save** writes to `localStorage`; use Export/Import JSON for backups.
+5. After changing `public/editor/cv_editor_caio_bilingual.html` on disk, hard-refresh (**Ctrl+F5**).
 
-PDF export (preferred):
+PDF export (preferred, **local only** — not run on Vercel):
 
 ```bat
 cd editor
@@ -32,7 +55,7 @@ cd editor
 python export_cv_pdf.py en pt
 ```
 
-Outputs land in `%USERPROFILE%\Downloads\` as `CV_Caio_Correia_EN.pdf` and `CV_Caio_Correia_PT.pdf`.
+The script reads `public/editor/cv_editor_caio_bilingual.html` from disk (file://), not through the password gate. Outputs land in `%USERPROFILE%\Downloads\` as `CV_Caio_Correia_EN.pdf` and `CV_Caio_Correia_PT.pdf`.
 
 ## Export notes
 
@@ -47,17 +70,17 @@ Reference PDFs after the 2026-09-23 keep-together fix live under [`samples/`](sa
 
 ## Deploy (Vercel)
 
-Static hosting of the HTML editor. PDF export via Playwright remains **local** (`editor/Exportar_CV_PDF.bat` / `export_cv_pdf.py`); the Vercel deployment does not run Chromium export.
+Framework: **Next.js** (`next build` / `next start`). Set `AUTH_USER`, `AUTH_PASS`, and `AUTH_SECRET` in the Vercel dashboard for Production (and Preview if you use those deploys). This repository does not store those values.
 
-- `vercel.json` rewrites `/` → `/editor/cv_editor_caio_bilingual.html`
-- Framework preset: Other / static (no build command)
-- Output: repository root (serves `editor/` and `samples/` as static assets)
+PDF export via Playwright remains **local** (`editor/Exportar_CV_PDF.bat` / `export_cv_pdf.py`). The Vercel deployment does not run Chromium export.
+
+The previous static rewrite `/` → editor HTML was removed so the password gate cannot be bypassed.
 
 Production is linked to this GitHub repo under the project owner's Vercel account.
 
 ## Layout / content
 
-Do not invent CV metrics or body text in docs. Resume content lives in the HTML editor file.
+Do not invent CV metrics or body text in docs. Resume content lives in `public/editor/cv_editor_caio_bilingual.html`.
 
 ## License / content
 

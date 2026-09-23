@@ -6,7 +6,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 HERE = Path(__file__).resolve().parent
-HTML = HERE / "cv_editor_caio_bilingual.html"
+HTML = HERE.parent / "public" / "editor" / "cv_editor_caio_bilingual.html"
 DOWNLOADS = Path.home() / "Downloads"
 
 
