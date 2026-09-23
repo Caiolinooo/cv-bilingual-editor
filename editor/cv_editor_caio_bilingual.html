@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CODER_ORPHAN_FIX 2026-09-23 -->
+<!-- CODER_PDF_EXPORT_PRINT_PLUS_BAT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Editor — Caio Valerio Goulart Correia</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #24292e;
+  --muted: #586069;
+  --accent: #0366d6;
+  --border: #eaecef;
+  --btn-bg: #f6f8fa;
+  --toolbar: #0d1117;
+  --toolbar-text: #f0f6fc;
+  --danger: #cf222e;
+  --ok: #1a7f37;
+  --panel: #f6f8fa;
+  --edit-outline: rgba(3,102,214,.35);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: #eef1f5;
+  line-height: 1.55;
+}
+#toolbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--toolbar); color: var(--toolbar-text);
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid #30363d;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+#toolbar .brand { font-weight: 700; margin-right: 8px; font-size: 14px; letter-spacing: .2px; }
+#toolbar .sep { width: 1px; height: 22px; background: #30363d; margin: 0 4px; }
+#toolbar button, #toolbar label.file-btn {
+  background: #21262d; color: var(--toolbar-text);
+  border: 1px solid #30363d; border-radius: 6px;
+  padding: 6px 10px; font-size: 12px; font-weight: 600;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+}
+#toolbar button:hover, #toolbar label.file-btn:hover { background: #30363d; }
+#toolbar button.active { background: var(--accent); border-color: var(--accent); }
+#toolbar button.danger { background: #3d1215; border-color: #8b1e26; }
+#toolbar button.ok { background: #0f3d1f; border-color: #1a7f37; }
+#toolbar .status { margin-left: auto; font-size: 12px; color: #8b949e; }
+#toolbar input[type=file] { display: none; }
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 48px);
+}
+.layout.preview-only { grid-template-columns: 1fr; }
+.layout.preview-only #side-panel { display: none; }
+#side-panel {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  max-height: calc(100vh - 48px);
+  position: sticky; top: 48px;
+}
+#side-panel h4 {
+  margin: 18px 0 8px; font-size: 12px; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted);
+}
+#side-panel h4:first-child { margin-top: 0; }
+#side-panel .hint { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+.field { margin-bottom: 10px; }
+.field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.field input, .field textarea, .field select {
+  width: 100%; padding: 7px 9px; border: 1px solid var(--border);
+  border-radius: 6px; font: inherit; font-size: 13px; background: #fff;
+}
+.field textarea { min-height: 72px; resize: vertical; }
+.item-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px; margin-bottom: 10px;
+}
+.item-card .row-actions { display: flex; gap: 6px; margin-top: 8px; }
+.item-card button {
+  font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--btn-bg);
+}
+.item-card button.rm { color: var(--danger); }
+.add-btn {
+  width: 100%; padding: 8px; border: 1px dashed var(--accent); color: var(--accent);
+  background: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;
+}
+.add-btn:hover { background: #eef5ff; }
+#resume-wrap {
+  padding: 24px 16px 60px;
+  display: flex; justify-content: center;
+}
+#resume {
+  width: 100%; max-width: 850px;
+  background: var(--bg); color: var(--text);
+  padding: 36px 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+}
+#resume a { color: var(--accent); text-decoration: none; }
+#resume a:hover { text-decoration: underline; }
+#resume header { margin-bottom: 24px; }
+#resume h1 { font-size: 30px; margin: 0 0 4px; letter-spacing: -.5px; }
+#resume .headline { font-size: 17px; color: var(--muted); font-weight: 400; margin: 0 0 12px; }
+#resume .contact { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; }
+#resume .summary { font-size: 14px; margin-bottom: 22px; }
+#resume h3 {
+  font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid var(--border); padding-bottom: 6px;
+  margin: 28px 0 14px;
+
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.job {
+  margin-bottom: 18px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.job-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 12px;
+  align-items: baseline;
+  width: 100%;
+  margin-bottom: 6px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.job-title {
+  font-weight: 600;
+  font-size: 15px;
+  text-align: left;
+  min-width: 0;
+}
+.job-meta {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+.job-details { margin: 0; padding-left: 18px; font-size: 13.5px; }
+.job-details li { margin-bottom: 6px; }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13.5px; }
+.skill-category strong { display: block; margin-bottom: 4px; }
+.skill-category p { margin: 0; color: var(--muted); }
+.matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+.matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+.matrix-table th { background: var(--btn-bg); font-weight: 600; }
+body.edit-mode #resume [contenteditable="true"] {
+  outline: 1px dashed var(--edit-outline);
+  border-radius: 3px; min-height: 1em;
+}
+body.edit-mode #resume [contenteditable="true"]:focus {
+  outline: 2px solid var(--accent); background: #f0f7ff;
+}
+.inline-rm {
+  display: none; margin-left: 8px; font-size: 11px; color: var(--danger);
+  border: 1px solid #ffd7d5; background: #ffebe9; border-radius: 4px;
+  padding: 1px 6px; cursor: pointer; vertical-align: middle;
+}
+body.edit-mode .inline-rm { display: inline-block; }
+.toast {
+  position: fixed; bottom: 18px; right: 18px; background: #0d1117; color: #fff;
+  padding: 10px 14px; border-radius: 8px; font-size: 13px; opacity: 0;
+  pointer-events: none; transition: opacity .25s; z-index: 200;
+}
+.toast.show { opacity: 1; }
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  #side-panel { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
+  .skills-grid { grid-template-columns: 1fr; }
+  body:not(.pdf-exporting) .job-header {
+    display: block;
+    width: 100%;
+  }
+  body:not(.pdf-exporting) .job-title,
+  body:not(.pdf-exporting) .job-meta {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+  body:not(.pdf-exporting) .job-meta { margin-top: 2px; white-space: normal; }
+}
+body.pdf-exporting #toolbar,
+body.pdf-exporting #side-panel,
+body.pdf-exporting .inline-rm { display: none !important; }
+body.pdf-exporting .layout { display: block !important; grid-template-columns: 1fr; margin: 0 !important; padding: 0 !important; }
+body.pdf-exporting #resume-wrap { padding: 0 !important; margin: 0 !important; }
+body.pdf-exporting { background: #fff !important; }
+body.pdf-exporting #resume {
+  box-shadow: none !important; border: none !important; border-radius: 0 !important;
+  max-width: 700px !important; width: 700px !important;
+  margin: 0 auto !important; padding: 24px 28px !important;
+}
+body.pdf-exporting .job-header {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  column-gap: 12px !important;
+  align-items: baseline !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+body.pdf-exporting .job-title {
+  text-align: left !important; min-width: 0 !important;
+  float: none !important; max-width: none !important;
+}
+body.pdf-exporting .job-meta {
+  text-align: right !important; white-space: nowrap !important;
+  float: none !important; max-width: none !important;
+}
+body.pdf-exporting .job {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+body.pdf-exporting #resume h3,
+body.pdf-exporting .job-header {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  break-after: avoid !important;
+  page-break-after: avoid !important;
+}
+/* Allow long sections to span pages; keep each job atomic */
+body.pdf-exporting section {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+tr, .skill-category, .job-header { break-inside: avoid; page-break-inside: avoid; }
+
+@media print {
+  @page { size: A4; margin: 1.4cm 1.1cm; }
+  #toolbar, #side-panel, .toast, .inline-rm { display: none !important; }
+  .layout { display: block; }
+  body { background: #fff; }
+  #resume-wrap { padding: 0; }
+  #resume {
+    box-shadow: none; border: none; border-radius: 0;
+    max-width: 100%; padding: 0; margin: 0;
+  }
+  .job, tr, .skill-category { break-inside: avoid; page-break-inside: avoid; }
+  #resume h3, .job-header {
+    break-inside: avoid; page-break-inside: avoid;
+    break-after: avoid; page-break-after: avoid;
+  }
+  section { break-inside: auto; page-break-inside: auto; }
+  a { color: #000 !important; text-decoration: none !important; }
+}
+</style>
+</head>
+<body class="edit-mode">
+
+<div id="toolbar">
+  <span class="brand">CV Creator · Caio</span>
+  <div class="sep"></div>
+  <button type="button" id="btn-edit" class="active" onclick="setMode('edit')">✎ Edit</button>
+  <button type="button" id="btn-preview" onclick="setMode('preview')">👁 Preview</button>
+  <button type="button" id="btn-pdf" class="ok" onclick="exportPDF()" title="Print/Save as PDF. For silent perfect export use Exportar_CV_PDF.bat">Export PDF</button>
+  <div class="sep"></div>
+  <button type="button" id="btn-en" class="active" onclick="setLang('en')">EN</button>
+  <button type="button" id="btn-pt" onclick="setLang('pt')">PT</button>
+  <div class="sep"></div>
+  <button type="button" class="ok" onclick="saveLocal()">💾 Save</button>
+  <button type="button" onclick="exportJSON()">⬇ Export JSON</button>
+  <button type="button" onclick="exportHTML()">⬇ Export HTML</button>
+  <label class="file-btn">⬆ Import JSON<input type="file" id="import-file" accept="application/json,.json" onchange="importJSON(event)"></label>
+  <button type="button" class="danger" onclick="resetCV()">↺ Reset</button>
+  <span class="status" id="status">Ready</span>
+</div>
+
+<div class="layout" id="layout">
+  <aside id="side-panel">
+    <h4>Header</h4>
+    <p class="hint">Edits sync to the live resume. Content is also editable inline on the page.</p>
+    <div class="field"><label>Name</label><input id="f-name" data-path="name"></div>
+    <div class="field"><label>Headline (EN)</label><input id="f-headline-en" data-path="headline.en"></div>
+    <div class="field"><label>Headline (PT)</label><input id="f-headline-pt" data-path="headline.pt"></div>
+    <div class="field"><label>Location (EN)</label><input id="f-loc-en" data-path="location.en"></div>
+    <div class="field"><label>Location (PT)</label><input id="f-loc-pt" data-path="location.pt"></div>
+    <div class="field"><label>Email</label><input id="f-email" data-path="email"></div>
+    <div class="field"><label>Phone</label><input id="f-phone" data-path="phone"></div>
+    <div class="field"><label>GitHub URL</label><input id="f-github" data-path="github"></div>
+    <div class="field"><label>LinkedIn URL</label><input id="f-linkedin" data-path="linkedin"></div>
+
+    <h4>Summary</h4>
+    <div class="field"><label>EN</label><textarea id="f-sum-en" data-path="summary.en"></textarea></div>
+    <div class="field"><label>PT</label><textarea id="f-sum-pt" data-path="summary.pt"></textarea></div>
+
+    <h4>Experience</h4>
+    <div id="exp-editor"></div>
+    <button type="button" class="add-btn" onclick="addExperience()">+ Add experience</button>
+
+    <h4>Projects</h4>
+    <div id="proj-editor"></div>
+    <button type="button" class="add-btn" onclick="addProject()">+ Add project</button>
+
+    <h4>Skills</h4>
+    <div id="skills-editor"></div>
+    <button type="button" class="add-btn" onclick="addSkill()">+ Add skill category</button>
+
+    <h4>Matrix rows</h4>
+    <div id="matrix-editor"></div>
+    <button type="button" class="add-btn" onclick="addMatrix()">+ Add matrix row</button>
+
+    <h4>Education</h4>
+    <div id="edu-editor"></div>
+    <button type="button" class="add-btn" onclick="addEducation()">+ Add education</button>
+
+    <h4>Languages line</h4>
+    <div class="field"><label>EN</label><textarea id="f-lang-en" data-path="languages.en"></textarea></div>
+    <div class="field"><label>PT</label><textarea id="f-lang-pt" data-path="languages.pt"></textarea></div>
+  </aside>
+
+  <div id="resume-wrap">
+    <article id="resume" aria-label="Resume preview"></article>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+const STORAGE_KEY = 'caio_cv_editor_v1';
+const DEFAULT_CV = {
+  name: "Caio Valerio Goulart Correia",
+  headline: {
+    en: "AI Specialist, Senior Data Engineer & Backend Developer",
+    pt: "Especialista em IA, Engenheiro de Dados Sênior & Desenvolvedor Backend"
+  },
+  location: { en: "Brazil (Remote)", pt: "Brasil (Remoto)" },
+  email: "caiovaleriogoulartcorreia@gmail.com",
+  phone: "+55 22 99784-7289",
+  github: "https://github.com/Caiolinooo",
+  linkedin: "https://linkedin.com/in/caio-goulart",
+  summary: {
+    en: "AI Specialist, Data Engineer, and Full-Stack Developer with a robust foundation in mechanical engineering and industrial automation, enabling a unique approach to solving complex architectural problems. Specialized in LLM fine-tuning (LoRA, QLoRA, DPO), PyTorch, Hugging Face ecosystem, local LLM serving and agentic tooling (MCP, vLLM, SGLang, llama.cpp), building highly scalable data pipelines, distributed systems, and robust backend architectures using Python, Java, and Node.js. Experienced in cloud infrastructure, container orchestration (Docker/Kubernetes), and automating CI/CD workflows for enterprise-grade AI solutions.",
+    pt: "Especialista em IA, Engenheiro de Dados e Desenvolvedor Full-Stack com sólida base em engenharia mecânica e automação industrial. Especializado em fine-tuning de LLMs (LoRA, QLoRA, DPO), ecossistema PyTorch e Hugging Face, serving local de LLMs e tooling agentic (MCP, vLLM, SGLang, llama.cpp), construção de pipelines de dados altamente escaláveis, sistemas distribuídos e arquiteturas de backend (Python, Java, Node.js). Experiência em infraestrutura em nuvem, orquestração de contêineres (Docker/Kubernetes) e automação de fluxos de CI/CD para soluções de IA em produção."
+  },
+  matrix: [
+    { skill: { en: "AI Engineering & LLMs (PyTorch, Hugging Face)", pt: "Engenharia de IA & LLMs (PyTorch, Hugging Face)" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "LLM Fine-Tuning & Quantization (LoRA, Unsloth, vLLM)", pt: "Fine-Tuning & Quantização de LLMs (LoRA, Unsloth, vLLM)" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Backend Development", pt: "Desenvolvimento Backend" }, years: { en: "9 years", pt: "9 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Python", pt: "Python" }, years: { en: "9 years", pt: "9 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "SQL & NoSQL", pt: "SQL & NoSQL" }, years: { en: "9 years (each)", pt: "9 anos (cada)" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "RESTful APIs", pt: "APIs RESTful" }, years: { en: "6 years", pt: "6 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Docker", pt: "Docker" }, years: { en: "6 years", pt: "6 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Data Engineering", pt: "Engenharia de Dados" }, years: { en: "5 years", pt: "5 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Node.js", pt: "Node.js" }, years: { en: "5 years", pt: "5 anos" }, level: { en: "Senior", pt: "Sênior" } },
+    { skill: { en: "Java (Spring Boot)", pt: "Java (Spring Boot)" }, years: { en: "4 years", pt: "4 anos" }, level: { en: "Mid / Senior", pt: "Pleno / Sênior" } },
+    { skill: { en: "AWS", pt: "AWS" }, years: { en: "4 years", pt: "4 anos" }, level: { en: "Mid", pt: "Pleno" } },
+    { skill: { en: "GraphQL", pt: "GraphQL" }, years: { en: "3 years", pt: "3 anos" }, level: { en: "Mid", pt: "Pleno" } },
+    { skill: { en: "Kubernetes", pt: "Kubernetes" }, years: { en: "3 years", pt: "3 anos" }, level: { en: "Mid", pt: "Pleno" } },
+    { skill: { en: "OCI Cloud", pt: "OCI Cloud" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Mid", pt: "Pleno" } }
+  ],
+  experience: [
+    {
+      title: { en: "AI Specialist", pt: "AI Specialist" },
+      meta: { en: "micro1 • Aug 2026 – Present", pt: "micro1 • Ago 2026 – Presente" },
+      bullets: {
+        en: [
+          "Drive the end-to-end development, fine-tuning, evaluation, and alignment of Large Language Models (LLMs), combining engineering principles with full-stack expertise to maximize algorithmic precision, logical reasoning, and code generation quality.",
+          "Conduct Supervised Fine-Tuning (SFT) and Direct Preference Optimization (DPO/RLHF) using PyTorch, Hugging Face (PEFT, LoRA/QLoRA), Unsloth, and Axolotl; perform adversarial testing to eliminate hallucinations and logic flaws.",
+          "Rigorously evaluate AI code generation across Python, TypeScript, Node.js, FastAPI, React, Next.js, and JavaFX, benchmarking data structure choices, dynamic execution, and complex API integrations.",
+          "Architect local LLM serving and agent harnesses on Windows/Linux with vLLM, SGLang, and llama.cpp on dedicated NVIDIA hardware (L4 GPU / 24GB VRAM), plus MCP tool servers for retrieval/graph tools; measure latency/throughput and iterate with custom eval harnesses.",
+          "Develop advanced prompt engineering frameworks, System Prompts, and tool-use chains to direct AI behavior, drastically improving code synthesis and enterprise IT problem-solving performance.",
+          "Curate high-quality training datasets and synthetic data pipelines (Self-Instruct, Evol-Instruct), establishing strict automated validation for dataset integrity, schema compliance, and model alignment."
+        ],
+        pt: [
+          "Atuação no desenvolvimento ponta a ponta, fine-tuning, avaliação e alinhamento de Modelos de Linguagem de Grande Escala (LLMs), unindo engenharia e experiência full-stack para maximizar precisão algorítmica, raciocínio lógico e geração de código.",
+          "Conduz sessões de Fine-Tuning Supervisionado (SFT) e Otimização de Preferência (DPO/RLHF) utilizando PyTorch, Hugging Face (PEFT, LoRA/QLoRA), Unsloth e Axolotl, executando testes adversariais para eliminar alucinações e falhas de lógica.",
+          "Valida rigorosamente a eficácia da IA na geração e refatoração de código em Python, TypeScript, Node.js, FastAPI, React, Next.js e JavaFX, avaliando desde estruturas de dados até a integração de APIs.",
+          "Arquiteta serving local de LLMs e harnesses agentic em Windows/Linux com vLLM, SGLang e llama.cpp em hardware dedicado NVIDIA (L4 GPU / 24GB VRAM), além de servidores de ferramentas MCP para retrieval/grafo; mede latência/throughput e itera com harnesses de eval customizados.",
+          "Desenvolve estruturas avançadas de Engenharia de Prompt, System Prompts e cadeias de uso de ferramentas para modelar o comportamento da IA, otimizando a resolução de problemas de software e infraestrutura.",
+          "Gera e cura pipelines de dados de treinamento e dados sintéticos de alta qualidade (Self-Instruct, Evol-Instruct), estabelecendo validações automatizadas de integridade, conformidade e alinhamento."
+        ]
+      }
+    },
+    {
+      title: { en: "Full-Stack Developer & DevOps Engineer", pt: "Desenvolvedor Full-Stack & Engenheiro DevOps" },
+      meta: { en: "ABZ Serviços • Jan 2025 – Present", pt: "ABZ Serviços • Jan 2025 – Presente" },
+      bullets: {
+        en: [
+          "Architected and developed EmployeeHub (Portal ABZ), an internal HR / operations portal used by 200+ employees. Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) on Vercel — DP, crew management, Man Schedule, e-Social, vacation, reimbursement, and ACL; suite also includes Timesheet (PontoFlow) and Invoice ABZ.",
+          "Led the cloud migration of legacy on-premise Windows Servers (2012-2025), achieving 80% completion with zero downtime in production environments.",
+          "Engineered and deployed a WireGuard-based VPN infrastructure for 50+ remote employees, drastically reducing support tickets and connection failures.",
+          "Implemented end-to-end CI/CD pipelines using GitHub Actions, Docker containerization, and administered virtualized environments across Proxmox and AWS S3."
+        ],
+        pt: [
+          "Arquitetou e desenvolveu o EmployeeHub (Portal ABZ), um portal interno de RH / operações utilizado por mais de 200 colaboradores. Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) na Vercel — DP, gestão de tripulantes, Man Schedule, e-Social, férias, reembolso e ACL; a suíte também inclui Timesheet (PontoFlow) e Invoice ABZ.",
+          "Liderou a migração para a nuvem de servidores Windows Server locais (2012-2025), atingindo 80% de conclusão com zero tempo de inatividade em ambientes de produção.",
+          "Projetou e implantou uma infraestrutura de VPN baseada em WireGuard para mais de 50 funcionários remotos, reduzindo drasticamente tickets de suporte e falhas de conexão.",
+          "Implementou pipelines de CI/CD de ponta a ponta utilizando GitHub Actions, conteinerização com Docker e administrou ambientes virtualizados via Proxmox e AWS S3."
+        ]
+      }
+    },
+    {
+      title: { en: "Python Developer & Spatial Data Engineer", pt: "Desenvolvedor Python & Engenheiro de Dados Espaciais" },
+      meta: { en: "BRTech3D • Mar 2024 – Mar 2025", pt: "BRTech3D • Mar 2024 – Mar 2025" },
+      bullets: {
+        en: [
+          "Developed high-performance Python scripts (NumPy, SciPy, Open3D) to automate geospatial data pipelines, optimizing the processing of dense point clouds (100+ million data points).",
+          "Implemented data routines that increased processing speed by 40% and improved data compression, yielding significant resource and time savings across dozens of projects.",
+          "Modeled and optimized PostgreSQL databases utilizing the PostGIS extension for complex spatial queries and seamless integration via REST APIs."
+        ],
+        pt: [
+          "Desenvolveu scripts de alta performance em Python (NumPy, SciPy, Open3D) para automatizar pipelines de dados geoespaciais, otimizando o processamento de nuvens de pontos densas (mais de 100 milhões de pontos de dados).",
+          "Implementou rotinas de dados que aumentaram a velocidade de processamento em 40% e melhoraram a compressão de dados, gerando economias significativas de tempo e recursos em dezenas de projetos.",
+          "Modelou e otimizou bancos de dados PostgreSQL utilizando a extensão PostGIS para consultas espaciais complexas e integração perfeita via APIs REST."
+        ]
+      }
+    },
+    {
+      title: { en: "Topographical Survey Operator III (Laser Scanning)", pt: "Operador de Levantamento Topográfico III (Laser Scanning)" },
+      meta: { en: "Master Engineering Services • Aug 2023 – Mar 2024", pt: "Master Engineering Services • Ago 2023 – Mar 2024" },
+      bullets: {
+        en: [
+          "Operated high-precision 3D laser scanning equipment (Leica) in complex industrial and archaeological environments.",
+          "Led field campaign planning and technical documentation, ensuring millimeter-level precision and data backup redundancy for large-scale data collection."
+        ],
+        pt: [
+          "Operou equipamentos de escaneamento a laser 3D de alta precisão (Leica) em ambientes industriais e arqueológicos complexos.",
+          "Liderou o planejamento de campanhas de campo e documentação técnica, garantindo precisão milimétrica e redundância de backup de dados em coletas de grande escala."
+        ]
+      }
+    },
+    {
+      title: { en: "Topographical Survey Operator II", pt: "Operador de Levantamento Topográfico II" },
+      meta: { en: "BRTech3D • Dec 2022 – Aug 2023", pt: "BRTech3D • Dez 2022 – Ago 2023" },
+      bullets: {
+        en: ["Executed field data collection using Leica TLS equipment and introduced Quality Assurance (QA) processes for outlier cleaning and multiple scan registration."],
+        pt: ["Executou a coleta de dados em campo utilizando equipamentos Leica TLS e introduziu processos de Garantia da Qualidade (QA) para limpeza de outliers e registro de múltiplos escaneamentos."]
+      }
+    },
+    {
+      title: { en: "Technical Documentation & Support Specialist", pt: "Especialista em Documentação Técnica e Suporte" },
+      meta: { en: "SmartStore / Jackkk Connection • Mar 2021 – Dec 2022", pt: "SmartStore / Jackkk Connection • Mar 2021 – Dez 2022" },
+      bullets: {
+        en: [
+          "Produced 50+ bilingual technical manuals and system specifications for international clients.",
+          "Provided advanced pre-sales support and detailed hardware/software architecture mapping for complex business proposals."
+        ],
+        pt: [
+          "Produziu mais de 50 manuais técnicos bilíngues e especificações de sistemas para clientes internacionais.",
+          "Forneceu suporte avançado de pré-vendas e mapeamento detalhado de arquitetura de hardware/software para propostas comerciais complexas."
+        ]
+      }
+    },
+    {
+      title: { en: "Training Specialist & Automation Technician", pt: "Especialista em Treinamento e Técnico em Automação" },
+      meta: { en: "Jackkk Connection Comercial • May 2017 – Mar 2021", pt: "Jackkk Connection Comercial • Mai 2017 – Mar 2021" },
+      bullets: {
+        en: [
+          "Coordinated and delivered technical training for over 500 professionals in PLCs, hydraulics, and industrial automation.",
+          "Developed educational simulations and managed B2B technical sales, building direct relationships with international suppliers."
+        ],
+        pt: [
+          "Coordenou e ministrou treinamentos técnicos para mais de 500 profissionais em CLPs, hidráulica e automação industrial.",
+          "Desenvolveu simulações educacionais e gerenciou vendas técnicas B2B, construindo relacionamento direto com fornecedores internacionais."
+        ]
+      }
+    },
+    {
+      title: { en: "Technical Team Lead & Specialized Support", pt: "Líder de Equipe Técnica e Suporte Especializado" },
+      meta: { en: "Diesel Line Cambuí • Aug 2016 – May 2017", pt: "Diesel Line Cambuí • Ago 2016 – Mai 2017" },
+      bullets: {
+        en: [
+          "Led specialized field teams in the maintenance of large-scale engines and turbines (CAT, Cummins, MAK).",
+          "Managed English-language technical support tickets for international clients and formally documented failure analysis processes."
+        ],
+        pt: [
+          "Liderou equipes de campo especializadas na manutenção de motores e turbinas de grande porte (CAT, Cummins, MAK).",
+          "Gerenciou tickets de suporte técnico em inglês para clientes internacionais e documentou formalmente processos de análise de falhas."
+        ]
+      }
+    },
+    {
+      title: { en: "Apprentice Technician", pt: "Técnico Aprendiz" },
+      meta: { en: "Diesel Line Cambuí • Oct 2015 – Aug 2016", pt: "Diesel Line Cambuí • Out 2015 – Ago 2016" },
+      bullets: {
+        en: ["Began career providing support to commercial processes, CRM management, and strict application of compliance procedures for diesel and gas systems maintenance."],
+        pt: ["Iniciou a carreira prestando suporte a processos comerciais, gestão de CRM e aplicação estrita de procedimentos de conformidade para manutenção de sistemas a diesel e gás."]
+      }
+    }
+  ],
+  projects: [
+    {
+      title: { en: "CloudSec & FinOps Compliance Auditor", pt: "CloudSec & FinOps Compliance Auditor" },
+      meta: { en: "Portfolio Product • 2026", pt: "Produto de Portfólio • 2026" },
+      live: "https://cloudsec-finops-auditor.vercel.app",
+      repo: "https://github.com/Caiolinooo/cloudsec-finops-auditor",
+      bullets: {
+        en: [
+          "Production-oriented compliance auditor that evaluates cloud architecture scenarios against CIS / SOC 2 / FinOps-style policies, returning structured risk, cost-impact, citations, and remediation steps.",
+          "Stack: Next.js (App Router) + TypeScript + Tailwind on Vercel; hybrid RAG (BM25 + TF-IDF + Reciprocal Rank Fusion) over versioned policies/*.md; structured Gemini audits (gemini-3.8-flash → gemini-3.6-flash fallback with 503 retry); bilingual EN/PT UI; Vitest unit tests and CI evaluation pipeline."
+        ],
+        pt: [
+          "Auditor de conformidade orientado a produção que avalia cenários de arquitetura em nuvem contra políticas no estilo CIS / SOC 2 / FinOps, retornando risco estruturado, impacto de custo, citações e passos de remediação.",
+          "Stack: Next.js (App Router) + TypeScript + Tailwind na Vercel; RAG híbrido (BM25 + TF-IDF + Reciprocal Rank Fusion) sobre policies/*.md versionadas; auditorias estruturadas via Gemini (gemini-3.8-flash → fallback gemini-3.6-flash com retry em 503); UI bilíngue EN/PT; testes Vitest e pipeline de avaliação em CI."
+        ]
+      }
+    },
+        {
+      title: { en: "Portal ABZ (EmployeeHub)", pt: "Portal ABZ (EmployeeHub)" },
+      meta: { en: "ABZ Serviços · Internal HR / Operations Portal · Live", pt: "ABZ Serviços · Portal interno de RH / Operações · Live" },
+      live: "https://employee-hub-kappa-flame.vercel.app",
+      repo: "https://github.com/Caiolinooo/EmployeeHub",
+      bullets: {
+        en: [
+          "Built the ABZ Group corporate portal (EmployeeHub / Painel ABZ) covering DP, crew management, Man Schedule, e-Social, vacation, reimbursement, and ACL — people and offshore schedules as the operational source of truth.",
+          "Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) on Vercel; payroll/folha derived from portal embarkation data with WK Radar sync, printable payslips, and audited reversible schedule edits.",
+          "Integrates with the ABZ suite: identity/collaborator data feeds Timesheet (PontoFlow) sync paths; payroll/charge-rate outputs feed Invoice generation for clients."
+        ],
+        pt: [
+          "Construiu o portal corporativo da ABZ Group (EmployeeHub / Painel ABZ) cobrindo DP, gestão de tripulantes, Man Schedule, e-Social, férias, reembolso e ACL — pessoas e escalas offshore como fonte operacional de verdade.",
+          "Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) na Vercel; folha derivada dos embarques do portal com sync WK Radar, contracheque imprimível e edições de escala auditadas/reversíveis.",
+          "Integra a suíte ABZ: identidade/colaboradores alimentam o Timesheet (PontoFlow); saídas de folha/charge-rate alimentam a geração de Invoice para clientes."
+        ]
+      }
+    },
+    {
+      title: { en: "PontoFlow (Timesheet Manager)", pt: "PontoFlow (Timesheet Manager)" },
+      meta: { en: "ABZ Group · Timesheet + mobile · Standalone (EmployeeHub-ready)", pt: "ABZ Group · Timesheet + mobile · Standalone (pronto para EmployeeHub)" },
+      live: "",
+      repo: "https://github.com/Caiolinooo/PontoFlow",
+      bullets: {
+        en: [
+          "Delivered PontoFlow, a bilingual (pt-BR/en-GB) timesheet system for offshore crew with manager approval, field-level annotations, and monthly deadline lock enforced in UI and RLS.",
+          "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; email/cron reminders (T-7…T); mobile companion; multi-tenant admin (invites, per-tenant SMTP).",
+          "Built standalone with EmployeeHub-ready sync (HMAC-authenticated import/export) so collaborator identity and timesheet periods can align with the Portal ABZ suite."
+        ],
+        pt: [
+          "Entregou o PontoFlow, um sistema de timesheet bilíngue (pt-BR/en-GB) para tripulação offshore com aprovação de gestores, anotações por campo e bloqueio de prazo mensal aplicado na UI e no RLS.",
+          "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; lembretes por e-mail/cron (T-7…T); companion mobile; admin multi-tenant (convites, SMTP por tenant).",
+          "Construído standalone com sync pronto para EmployeeHub (import/export autenticado por HMAC) para alinhar identidade de colaboradores e períodos de timesheet com a suíte Portal ABZ."
+        ]
+      }
+    },
+    {
+      title: { en: "Invoice ABZ (Payroll → Invoice)", pt: "Invoice ABZ (Folha → Invoice)" },
+      meta: { en: "ABZ Group / ABZ International · Finance automation", pt: "ABZ Group / ABZ International · Automação financeira" },
+      live: "",
+      repo: "https://github.com/Caiolinooo/invoice_abz",
+      bullets: {
+        en: [
+          "Built a multi-company Invoice engine that turns payroll/charge-rate spreadsheets into client invoices (FMS, OMEGA, Jifmar vessels) with automatic client detection and parser routing.",
+          "Stack: FastAPI + SQLAlchemy + SQLite + OpenPyXL; preview → invoice number/date → per-person invoices or ZIP; isolated dev/prod databases.",
+          "Closes the ABZ financial loop: Portal/folha and charge-rate data become standardized invoices for ABZ Group and ABZ International without rewriting code per client."
+        ],
+        pt: [
+          "Construiu um motor multi-empresa de Invoice que transforma planilhas de folha/charge-rate em invoices por cliente (FMS, OMEGA, embarcações Jifmar) com detecção automática de cliente e roteamento de parsers.",
+          "Stack: FastAPI + SQLAlchemy + SQLite + OpenPyXL; preview → número/data da invoice → invoices por pessoa ou ZIP; bancos de dados dev/prod isolados.",
+          "Fecha o loop financeiro da ABZ: dados de Portal/folha e charge-rate viram invoices padronizadas para ABZ Group e ABZ International sem reescrever código por cliente."
+        ]
+      }
+    },
+{
+      title: { en: "Model Context Protocol (MCP) / Knowledge Graph", pt: "Model Context Protocol (MCP) / Grafo de Conhecimento" },
+      meta: { en: "Personal / Local AI stack", pt: "Pessoal / Stack de IA local" },
+      live: "",
+      repo: "",
+      bullets: {
+        en: ["Built MCP tool servers over a local knowledge graph (Python + SQLite/FTS indexing) so agents retrieve structured neighborhoods instead of stuffing raw context into prompts.", "Wired tool-calling loops to OpenAI-compatible local serving (vLLM / SGLang) and llama.cpp for low-latency/offline paths; custom harnesses for multi-step agents, retries, and tool-success eval."],
+        pt: ["Construiu servidores de ferramentas MCP sobre um grafo de conhecimento local (Python + indexação SQLite/FTS) para que agentes recuperem vizinhanças estruturadas em vez de empurrar contexto bruto no prompt.", "Conectou loops de tool-calling a serving local OpenAI-compatible (vLLM / SGLang) e llama.cpp para caminhos de baixa latência/offline; harnesses customizados para agentes multi-step, retries e eval de sucesso de ferramentas."]
+      }
+    }
+  ],
+  skills: [
+    {
+      cat: { en: "AI & LLM Engineering", pt: "Engenharia de IA & LLMs" },
+      items: { en: "PyTorch, Hugging Face (PEFT, LoRA/QLoRA, TRL), DeepSpeed, Unsloth, llama.cpp, vLLM, SGLang, Model Context Protocol (MCP), custom agent harnesses / tool-calling, LangChain, LlamaIndex, Triton Inference, Synthetic Data Generation.", pt: "PyTorch, Hugging Face (PEFT, LoRA/QLoRA, TRL), DeepSpeed, Unsloth, llama.cpp, vLLM, SGLang, Model Context Protocol (MCP), harnesses agentic / tool-calling customizados, LangChain, LlamaIndex, Triton Inference, Geração de Dados Sintéticos." }
+    },
+    {
+      cat: { en: "Backend & Data Engineering", pt: "Engenharia de Dados e Backend" },
+      items: { en: "Python 3 (NumPy, SciPy), Java (Spring Boot), Node.js, Express, TypeScript, REST & GraphQL APIs, JWT Auth.", pt: "Python 3 (NumPy, SciPy), Java (Spring Boot), Node.js, Express, TypeScript, APIs REST & GraphQL, Autenticação JWT." }
+    },
+    {
+      cat: { en: "Cloud & DevOps", pt: "Cloud & DevOps" },
+      items: { en: "Docker, Kubernetes (Concepts), AWS S3, Linux (Ubuntu/CentOS), Proxmox, WireGuard VPN, Cloudflare, Vercel, Next.js.", pt: "Docker, Kubernetes (Conceitos), AWS S3, Linux (Ubuntu/CentOS), Proxmox, WireGuard VPN, Cloudflare, Vercel, Next.js." }
+    },
+    {
+      cat: { en: "Databases & CI/CD", pt: "Bancos de Dados & CI/CD" },
+      items: { en: "PostgreSQL, PostGIS, SQLite, NoSQL, GitHub Actions (CI/CD), Git, Advanced Scripting (PowerShell/Python), Vitest.", pt: "PostgreSQL, PostGIS, SQLite, NoSQL, GitHub Actions (CI/CD), Git, Scripting Avançado (PowerShell/Python), Vitest." }
+    }
+  ],
+  education: [
+    {
+      title: { en: "B.S. in Mechanical Engineering (7th Semester)", pt: "Bacharelado em Engenharia Mecânica (7º Semestre)" },
+      meta: { en: "UniFatecie • Jan 2024 – Present", pt: "UniFatecie • Jan 2024 – Presente" }
+    },
+    {
+      title: { en: "Technical Diploma in Industrial Automation", pt: "Técnico em Automação Industrial" },
+      meta: { en: "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016", pt: "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016" }
+    }
+  ],
+  languages: {
+    en: "<strong>Portuguese:</strong> Native | <strong>English:</strong> Fluent (Technical proficiency and conversational, C1) | <strong>Spanish/Italian:</strong> Advanced technical reading.",
+    pt: "<strong>Português:</strong> Nativo | <strong>Inglês:</strong> Fluente (Proficiência técnica e conversacional, C1) | <strong>Espanhol/Italiano:</strong> Leitura técnica avançada."
+  }
+};
+
+let cv = null;
+let lang = 'en';
+let mode = 'edit';
+let saveTimer = null;
+let suppressPanelSync = false;
+
+const T = {
+  en: {
+    matrix: "Core Competencies & Experience Matrix",
+    skill: "Skill / Technology", years: "Years of Experience", level: "Level",
+    exp: "Professional Experience", projects: "Relevant Projects",
+    skills: "Technical Skills", edu: "Education", langs: "Languages",
+    live: "Live", repo: "Repo"
+  },
+  pt: {
+    matrix: "Competências Principais & Matriz de Experiência",
+    skill: "Habilidade / Tecnologia", years: "Anos de Experiência", level: "Nível",
+    exp: "Experiência Profissional", projects: "Projetos Relevantes",
+    skills: "Habilidades Técnicas", edu: "Formação Acadêmica", langs: "Idiomas",
+    live: "Live", repo: "Repo"
+  }
+};
+
+function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+function setStatus(msg){ document.getElementById('status').textContent = msg; }
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function githubLabel(url){
+  try { return url.replace(/^https?:\/\//,'').replace(/\/$/,''); } catch(e){ return url; }
+}
+
+function setMode(m){
+  mode = m;
+  document.body.classList.toggle('edit-mode', m === 'edit');
+  document.getElementById('layout').classList.toggle('preview-only', m === 'preview');
+  document.getElementById('btn-edit').classList.toggle('active', m === 'edit');
+  document.getElementById('btn-preview').classList.toggle('active', m === 'preview');
+  renderResume();
+  setStatus(m === 'edit' ? 'Edit mode' : 'Preview mode');
+}
+function setLang(l){
+  lang = l;
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-pt').classList.toggle('active', l === 'pt');
+  renderAll();
+  setStatus(l === 'en' ? 'Language: EN' : 'Idioma: PT');
+}
+
+function getByPath(obj, path){
+  return path.split('.').reduce((a,k)=> (a==null? a : a[k]), obj);
+}
+function setByPath(obj, path, value){
+  const parts = path.split('.');
+  let cur = obj;
+  for (let i=0;i<parts.length-1;i++){
+    if (cur[parts[i]] == null) cur[parts[i]] = {};
+    cur = cur[parts[i]];
+  }
+  cur[parts[parts.length-1]] = value;
+}
+
+function bindPanelInputs(){
+  document.querySelectorAll('[data-path]').forEach(el=>{
+    el.oninput = () => {
+      setByPath(cv, el.dataset.path, el.value);
+      scheduleSave();
+      renderResume();
+    };
+  });
+}
+
+function fillPanelScalars(){
+  suppressPanelSync = true;
+  document.querySelectorAll('[data-path]').forEach(el=>{
+    const v = getByPath(cv, el.dataset.path);
+    el.value = v == null ? '' : String(v).replace(/<\/?strong>/g,'');
+  });
+  // keep HTML for languages fields
+  document.getElementById('f-lang-en').value = cv.languages.en;
+  document.getElementById('f-lang-pt').value = cv.languages.pt;
+  suppressPanelSync = false;
+}
+
+function bulletsToText(arr){ return (arr||[]).join('\n'); }
+function textToBullets(txt){ return String(txt||'').split(/\n+/).map(s=>s.trim()).filter(Boolean); }
+
+function renderSectionEditors(){
+  // Experience
+  const exp = document.getElementById('exp-editor');
+  exp.innerHTML = cv.experience.map((job,i)=>`
+    <div class="item-card">
+      <div class="field"><label>#${i+1} Title EN</label><input value="${esc(job.title.en)}" oninput="cv.experience[${i}].title.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Title PT</label><input value="${esc(job.title.pt)}" oninput="cv.experience[${i}].title.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta EN</label><input value="${esc(job.meta.en)}" oninput="cv.experience[${i}].meta.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta PT</label><input value="${esc(job.meta.pt)}" oninput="cv.experience[${i}].meta.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Bullets EN (one per line)</label><textarea oninput="cv.experience[${i}].bullets.en=textToBullets(this.value);scheduleSave();renderResume()">${esc(bulletsToText(job.bullets.en))}</textarea></div>
+      <div class="field"><label>Bullets PT (one per line)</label><textarea oninput="cv.experience[${i}].bullets.pt=textToBullets(this.value);scheduleSave();renderResume()">${esc(bulletsToText(job.bullets.pt))}</textarea></div>
+      <div class="row-actions">
+        <button type="button" onclick="moveItem('experience',${i},-1)" title="Move up">&#9650;</button>
+        <button type="button" onclick="moveItem('experience',${i},1)" title="Move down">&#9660;</button>
+        <button type="button" class="rm" onclick="removeItem('experience',${i})">Remove</button>
+      </div>
+    </div>`).join('');
+
+  const proj = document.getElementById('proj-editor');
+  proj.innerHTML = cv.projects.map((p,i)=>`
+    <div class="item-card">
+      <div class="field"><label>#${i+1} Title EN</label><input value="${esc(p.title.en)}" oninput="cv.projects[${i}].title.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Title PT</label><input value="${esc(p.title.pt)}" oninput="cv.projects[${i}].title.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta EN</label><input value="${esc(p.meta.en)}" oninput="cv.projects[${i}].meta.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta PT</label><input value="${esc(p.meta.pt)}" oninput="cv.projects[${i}].meta.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Live URL</label><input value="${esc(p.live||'')}" oninput="cv.projects[${i}].live=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Repo URL</label><input value="${esc(p.repo||'')}" oninput="cv.projects[${i}].repo=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Bullets EN</label><textarea oninput="cv.projects[${i}].bullets.en=textToBullets(this.value);scheduleSave();renderResume()">${esc(bulletsToText(p.bullets.en))}</textarea></div>
+      <div class="field"><label>Bullets PT</label><textarea oninput="cv.projects[${i}].bullets.pt=textToBullets(this.value);scheduleSave();renderResume()">${esc(bulletsToText(p.bullets.pt))}</textarea></div>
+      <div class="row-actions">
+        <button type="button" onclick="moveItem('projects',${i},-1)" title="Move up">&#9650;</button>
+        <button type="button" onclick="moveItem('projects',${i},1)" title="Move down">&#9660;</button>
+        <button type="button" class="rm" onclick="removeItem('projects',${i})">Remove</button>
+      </div>
+    </div>`).join('');
+
+  const sk = document.getElementById('skills-editor');
+  sk.innerHTML = cv.skills.map((s,i)=>`
+    <div class="item-card">
+      <div class="field"><label>Category EN</label><input value="${esc(s.cat.en)}" oninput="cv.skills[${i}].cat.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Category PT</label><input value="${esc(s.cat.pt)}" oninput="cv.skills[${i}].cat.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Items EN</label><textarea oninput="cv.skills[${i}].items.en=this.value;scheduleSave();renderResume()">${esc(s.items.en)}</textarea></div>
+      <div class="field"><label>Items PT</label><textarea oninput="cv.skills[${i}].items.pt=this.value;scheduleSave();renderResume()">${esc(s.items.pt)}</textarea></div>
+      <div class="row-actions"><button type="button" class="rm" onclick="removeItem('skills',${i})">Remove</button></div>
+    </div>`).join('');
+
+  const mx = document.getElementById('matrix-editor');
+  mx.innerHTML = cv.matrix.map((r,i)=>`
+    <div class="item-card">
+      <div class="field"><label>Skill EN</label><input value="${esc(r.skill.en)}" oninput="cv.matrix[${i}].skill.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Skill PT</label><input value="${esc(r.skill.pt)}" oninput="cv.matrix[${i}].skill.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Years EN</label><input value="${esc(r.years.en)}" oninput="cv.matrix[${i}].years.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Years PT</label><input value="${esc(r.years.pt)}" oninput="cv.matrix[${i}].years.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Level EN</label><input value="${esc(r.level.en)}" oninput="cv.matrix[${i}].level.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Level PT</label><input value="${esc(r.level.pt)}" oninput="cv.matrix[${i}].level.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="row-actions"><button type="button" class="rm" onclick="removeItem('matrix',${i})">Remove</button></div>
+    </div>`).join('');
+
+  const edu = document.getElementById('edu-editor');
+  edu.innerHTML = cv.education.map((e,i)=>`
+    <div class="item-card">
+      <div class="field"><label>Title EN</label><input value="${esc(e.title.en)}" oninput="cv.education[${i}].title.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Title PT</label><input value="${esc(e.title.pt)}" oninput="cv.education[${i}].title.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta EN</label><input value="${esc(e.meta.en)}" oninput="cv.education[${i}].meta.en=this.value;scheduleSave();renderResume()"></div>
+      <div class="field"><label>Meta PT</label><input value="${esc(e.meta.pt)}" oninput="cv.education[${i}].meta.pt=this.value;scheduleSave();renderResume()"></div>
+      <div class="row-actions"><button type="button" class="rm" onclick="removeItem('education',${i})">Remove</button></div>
+    </div>`).join('');
+}
+
+function addExperience(){
+  cv.experience.unshift({
+    title:{en:'New Role',pt:'Novo Cargo'},
+    meta:{en:'Company • Date',pt:'Empresa • Data'},
+    bullets:{en:['Describe impact and stack.'],pt:['Descreva impacto e stack.']}
+  });
+  scheduleSave(); renderAll(); toast('Experience added');
+}
+function addProject(){
+  cv.projects.push({
+    title:{en:'New Project',pt:'Novo Projeto'},
+    meta:{en:'2026',pt:'2026'}, live:'', repo:'',
+    bullets:{en:['Project summary.'],pt:['Resumo do projeto.']}
+  });
+  scheduleSave(); renderAll(); toast('Project added');
+}
+function addSkill(){
+  cv.skills.push({cat:{en:'New Category',pt:'Nova Categoria'}, items:{en:'Skill list',pt:'Lista de skills'}});
+  scheduleSave(); renderAll(); toast('Skill category added');
+}
+function addMatrix(){
+  cv.matrix.push({skill:{en:'Technology',pt:'Tecnologia'}, years:{en:'1 year',pt:'1 ano'}, level:{en:'Mid',pt:'Pleno'}});
+  scheduleSave(); renderAll(); toast('Matrix row added');
+}
+function addEducation(){
+  cv.education.push({title:{en:'Program',pt:'Curso'}, meta:{en:'Institution • Dates',pt:'Instituição • Datas'}});
+  scheduleSave(); renderAll(); toast('Education added');
+}
+function removeItem(key, i){
+  if (!confirm('Remove this item?')) return;
+  cv[key].splice(i,1);
+  scheduleSave(); renderAll(); toast('Removed');
+}
+function moveItem(key, i, dir){
+  const j = i + dir;
+  if (j < 0 || j >= cv[key].length) return;
+  const tmp = cv[key][i]; cv[key][i] = cv[key][j]; cv[key][j] = tmp;
+  scheduleSave(); renderAll();
+}
+
+function ce(attr, html){
+  if (mode !== 'edit') return html;
+  return `<span contenteditable="true" data-bind="${attr}" spellcheck="true">${html}</span>`;
+}
+
+function renderResume(){
+  const t = T[lang];
+  const L = lang;
+  const gh = githubLabel(cv.github);
+  const li = githubLabel(cv.linkedin);
+
+  const matrixRows = cv.matrix.map((r,i)=>`
+    <tr>
+      <td>${ce(`matrix.${i}.skill.${L}`, esc(r.skill[L]))}</td>
+      <td>${ce(`matrix.${i}.years.${L}`, esc(r.years[L]))}</td>
+      <td>${ce(`matrix.${i}.level.${L}`, esc(r.level[L]))}</td>
+    </tr>`).join('');
+
+  const jobs = cv.experience.map((job,i)=>{
+    const bullets = (job.bullets[L]||[]).map((b,bi)=>`<li>${ce(`experience.${i}.bullets.${L}.${bi}`, esc(b))}</li>`).join('');
+    return `<div class="job">
+      <div class="job-header">
+        <span class="job-title">${ce(`experience.${i}.title.${L}`, esc(job.title[L]))}</span>
+        <span class="job-meta">${ce(`experience.${i}.meta.${L}`, esc(job.meta[L]))}
+<button type="button" class="inline-rm" onclick="removeItem('experience',${i})">X</button></span>
+      </div>
+      <ul class="job-details">${bullets}</ul>
+    </div>`;
+  }).join('');
+
+  const projects = cv.projects.map((p,i)=>{
+    const links = [];
+    if (p.live) links.push(`<strong>${t.live}:</strong> <a href="${esc(p.live)}" target="_blank">${esc(githubLabel(p.live))}</a>`);
+    if (p.repo) links.push(`<strong>${t.repo}:</strong> <a href="${esc(p.repo)}" target="_blank">${esc(githubLabel(p.repo))}</a>`);
+    const linkLi = links.length ? `<li>${links.join(' · ')}</li>` : '';
+    const bullets = (p.bullets[L]||[]).map((b,bi)=>`<li>${ce(`projects.${i}.bullets.${L}.${bi}`, esc(b))}</li>`).join('');
+    return `<div class="job">
+      <div class="job-header">
+        <span class="job-title">${ce(`projects.${i}.title.${L}`, esc(p.title[L]))}</span>
+        <span class="job-meta">${ce(`projects.${i}.meta.${L}`, esc(p.meta[L]))}
+<button type="button" class="inline-rm" onclick="removeItem('projects',${i})">X</button></span>
+      </div>
+      <ul class="job-details">${linkLi}${bullets}</ul>
+    </div>`;
+  }).join('');
+
+  const skills = cv.skills.map((s,i)=>`
+    <div class="skill-category">
+      <strong>${ce(`skills.${i}.cat.${L}`, esc(s.cat[L]))}</strong>
+      <p>${ce(`skills.${i}.items.${L}`, esc(s.items[L]))}</p>
+    </div>`).join('');
+
+  const edu = cv.education.map((e,i)=>`
+    <div class="job">
+      <div class="job-header">
+        <span class="job-title">${ce(`education.${i}.title.${L}`, esc(e.title[L]))}</span>
+        <span class="job-meta">${ce(`education.${i}.meta.${L}`, esc(e.meta[L]))}<button type="button" class="inline-rm" onclick="removeItem('education',${i})">X</button></span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('resume').innerHTML = `
+    <header>
+      <h1>${ce('name', esc(cv.name))}</h1>
+      <p class="headline">${ce(`headline.${L}`, esc(cv.headline[L]))}</p>
+      <div class="contact">
+        <span>${ce(`location.${L}`, esc(cv.location[L]))}</span>
+        <span><a href="mailto:${esc(cv.email)}">${ce('email', esc(cv.email))}</a></span>
+        <span>${ce('phone', esc(cv.phone))}</span>
+        <span><a href="${esc(cv.github)}" target="_blank">${esc(gh)}</a></span>
+        <span><a href="${esc(cv.linkedin)}" target="_blank">${esc(li)}</a></span>
+      </div>
+    </header>
+    <div class="summary"><p>${ce(`summary.${L}`, esc(cv.summary[L]))}</p></div>
+    <section>
+      <h3>${t.matrix}</h3>
+      <table class="matrix-table">
+        <thead><tr><th>${t.skill}</th><th>${t.years}</th><th>${t.level}</th></tr></thead>
+        <tbody>${matrixRows}</tbody>
+      </table>
+    </section>
+    <section><h3>${t.exp}</h3>${jobs}</section>
+    <section><h3>${t.projects}</h3>${projects}</section>
+    <section><h3>${t.skills}</h3><div class="skills-grid">${skills}</div></section>
+    <section><h3>${t.edu}</h3>${edu}</section>
+    <section><h3>${t.langs}</h3><div class="skill-category"><p>${ce(`languages.${L}`, cv.languages[L])}</p></div></section>
+  `;
+
+  if (mode === 'edit') {
+    document.querySelectorAll('#resume [contenteditable]').forEach(el=>{
+      el.addEventListener('input', () => {
+        const path = el.dataset.bind;
+        // languages may contain HTML strong tags — allow HTML
+        if (path.startsWith('languages.')) setByPath(cv, path, el.innerHTML);
+        else setByPath(cv, path, el.innerText);
+        scheduleSave();
+        // sync scalar panel fields without rebuilding editors (preserve focus)
+        syncScalarPanelFromCV();
+      });
+      el.addEventListener('blur', () => {
+        // rebuild panel editors on blur so list editors stay consistent
+        fillPanelScalars();
+      });
+    });
+  }
+}
+
+function syncScalarPanelFromCV(){
+  document.querySelectorAll('[data-path]').forEach(el=>{
+    if (document.activeElement === el) return;
+    const v = getByPath(cv, el.dataset.path);
+    if (el.id === 'f-lang-en' || el.id === 'f-lang-pt') el.value = v || '';
+    else el.value = v == null ? '' : String(v).replace(/<\/?strong>/g,'');
+  });
+}
+
+function renderAll(){
+  fillPanelScalars();
+  renderSectionEditors();
+  renderResume();
+}
+
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveLocal, 600);
+  setStatus('Unsaved changes…');
+}
+function saveLocal(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cv));
+  setStatus('Saved · ' + new Date().toLocaleTimeString());
+  toast('Saved to localStorage');
+}
+function loadLocal(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e){ return null; }
+}
+function resetCV(){
+  if (!confirm('Reset to factory default (includes CloudSec + ABZ suite projects)? This clears localStorage.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  cv = deepClone(DEFAULT_CV);
+  renderAll();
+  toast('Reset to default');
+  setStatus('Reset');
+}
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(cv, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cv_caio_correia.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('JSON exported');
+}
+function importJSON(ev){
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data.name || !data.experience) throw new Error('Invalid CV JSON');
+      cv = data;
+      saveLocal();
+      renderAll();
+      toast('JSON imported');
+    } catch(e){
+      alert('Import failed: ' + e.message);
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value = '';
+}
+function exportHTML(){
+  // Temporarily force preview rendering for clean export
+  const prev = mode;
+  mode = 'preview';
+  renderResume();
+  const resumeHTML = document.getElementById('resume').innerHTML;
+  mode = prev;
+  renderResume();
+  const doc = `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(cv.name)} - Resume</title>
+<style>
+:root{--bg:#fff;--text:#24292e;--muted:#586069;--accent:#0366d6;--border:#eaecef;--btn-bg:#f6f8fa;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--text);line-height:1.55;max-width:850px;margin:0 auto;padding:36px 20px;background:#fff;}
+a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+header{margin-bottom:24px;} h1{font-size:30px;margin:0 0 4px;letter-spacing:-.5px;}
+.headline{font-size:17px;color:var(--muted);font-weight:400;margin:0 0 12px;}
+.contact{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px;}
+.summary{font-size:14px;margin-bottom:22px;}
+h3{font-size:14px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);padding-bottom:6px;margin:28px 0 14px;}
+.job{margin-bottom:18px;} .job-header{display:grid;grid-template-columns:1fr auto;column-gap:12px;align-items:baseline;width:100%;margin-bottom:6px;} .job-title{font-weight:600;font-size:15px;text-align:left;min-width:0;} .job-meta{font-size:13px;color:var(--muted);text-align:right;white-space:nowrap;}
+.job-details{margin:0;padding-left:18px;font-size:13.5px;} .job-details li{margin-bottom:6px;}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:13.5px;}
+.skill-category strong{display:block;margin-bottom:4px;} .skill-category p{margin:0;color:var(--muted);}
+.matrix-table{width:100%;border-collapse:collapse;font-size:13px;}
+.matrix-table th,.matrix-table td{border:1px solid var(--border);padding:6px 10px;text-align:left;}
+.matrix-table th{background:var(--btn-bg);font-weight:600;}
+@media print{@page{size:A4;margin:1.4cm 1.1cm;} body{padding:0;} .job,tr,.skill-category{break-inside:avoid;page-break-inside:avoid;} h3,.job-header{break-after:avoid;page-break-after:avoid;break-inside:avoid;page-break-inside:avoid;} section{break-inside:auto;page-break-inside:auto;} a{color:#000;text-decoration:none;} }
+</style>
+</head>
+<body>
+${resumeHTML}
+</body>
+</html>`;
+  const blob = new Blob([doc], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `CV_Caio_Correia_${lang.toUpperCase()}_export.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('HTML exported');
+}
+
+
+async function exportPDF(){
+  const msgs = {
+    en: {
+      gen: "Opening print dialog… Choose Save as PDF and turn off Headers and footers.",
+      ok: "Print dialog opened",
+      err: "Could not open print dialog"
+    },
+    pt: {
+      gen: "Abrindo impressão… Escolha Salvar como PDF e desmarque Cabeçalhos e rodapés.",
+      ok: "Diálogo de impressão aberto",
+      err: "Não foi possível abrir a impressão"
+    }
+  };
+  const m = msgs[lang] || msgs.en;
+  const prevMode = mode;
+  const body = document.body;
+  const layout = document.getElementById("layout");
+
+  mode = "preview";
+  body.classList.remove("edit-mode");
+  body.classList.add("pdf-exporting");
+  layout.classList.add("preview-only");
+  renderResume();
+  toast(m.gen);
+  setStatus(m.gen);
+
+  try {
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    window.print();
+    toast(m.ok);
+    setStatus(m.ok + " — preferível: Exportar_CV_PDF.bat (Chromium nativo)");
+  } catch (e) {
+    console.error(e);
+    toast(m.err);
+    setStatus(m.err + ": " + (e && e.message ? e.message : e));
+  } finally {
+    body.classList.remove("pdf-exporting");
+    mode = prevMode;
+    body.classList.toggle("edit-mode", prevMode === "edit");
+    layout.classList.toggle("preview-only", prevMode === "preview");
+    document.getElementById("btn-edit").classList.toggle("active", prevMode === "edit");
+    document.getElementById("btn-preview").classList.toggle("active", prevMode === "preview");
+    renderResume();
+  }
+}
+
+function init(){
+  cv = loadLocal() || deepClone(DEFAULT_CV);
+  // ensure CloudSec + ABZ suite projects exist even on older localStorage (merge-by-key)
+  function projectKey(p){
+    const repo = (p.repo||'').toLowerCase();
+    const live = (p.live||'').toLowerCase();
+    const t = ((p.title&&p.title.en)||'').toLowerCase();
+    if (repo.includes('cloudsec-finops-auditor') || live.includes('cloudsec-finops-auditor') || t.includes('cloudsec')) return 'cloudsec';
+    if (repo.includes('employeehub') || live.includes('employee-hub') || t.includes('portal abz') || t.includes('employeehub')) return 'portal';
+    if (repo.includes('pontoflow') || t.includes('pontoflow') || t.includes('timesheet manager')) return 'pontoflow';
+    if (repo.includes('invoice_abz') || t.includes('invoice abz')) return 'invoice';
+    if (t.includes('model context protocol') || t.includes('mcp')) return 'mcp';
+    return repo || live || t || JSON.stringify(p.title||{});
+  }
+  const defProjects = deepClone(DEFAULT_CV.projects||[]);
+  const existing = cv.projects||[];
+  const byKey = new Map();
+  existing.forEach(p => { byKey.set(projectKey(p), p); });
+  // Prefer DEFAULT order: CloudSec, Portal, PontoFlow, Invoice, MCP; keep any extras after
+  const ordered = [];
+  const used = new Set();
+  defProjects.forEach(dp => {
+    const k = projectKey(dp);
+    ordered.push(byKey.has(k) ? byKey.get(k) : dp);
+    used.add(k);
+  });
+  existing.forEach(p => {
+    const k = projectKey(p);
+    if (!used.has(k)) { ordered.push(p); used.add(k); }
+  });
+  cv.projects = ordered;
+  bindPanelInputs();
+  renderAll();
+  setStatus(localStorage.getItem(STORAGE_KEY) ? 'Loaded from localStorage' : 'Default CV loaded');
+}
+init();
+</script>
+</body>
+</html>
