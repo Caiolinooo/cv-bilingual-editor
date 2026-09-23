@@ -45,6 +45,16 @@ Outputs land in `%USERPROFILE%\Downloads\` as `CV_Caio_Correia_EN.pdf` and `CV_C
 
 Reference PDFs after the 2026-09-23 keep-together fix live under [`samples/`](samples/). Regenerate them after content or layout edits.
 
+## Deploy (Vercel)
+
+Static hosting of the HTML editor. PDF export via Playwright remains **local** (`editor/Exportar_CV_PDF.bat` / `export_cv_pdf.py`); the Vercel deployment does not run Chromium export.
+
+- `vercel.json` rewrites `/` → `/editor/cv_editor_caio_bilingual.html`
+- Framework preset: Other / static (no build command)
+- Output: repository root (serves `editor/` and `samples/` as static assets)
+
+Production is linked to this GitHub repo under the project owner's Vercel account.
+
 ## Layout / content
 
 Do not invent CV metrics or body text in docs. Resume content lives in the HTML editor file.
