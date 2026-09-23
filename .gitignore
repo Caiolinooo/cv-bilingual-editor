@@ -1,0 +1,18 @@
+# Editor leftovers / backups
+*.bak_*
+*.bak
+.bak_*
+_pdf_debug/
+_orphan_check/
+_bad_preview/
+_test_preview/
+_fixed_preview/
+_test_export_*.pdf
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+*.tmp_*
