@@ -9,7 +9,3 @@ function clearSession(response: NextResponse) {
 export async function POST() {
   return clearSession(NextResponse.json({ ok: true }));
 }
-
-export async function GET(request: Request) {
-  return clearSession(NextResponse.redirect(new URL("/login", request.url)));
-}

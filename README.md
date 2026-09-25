@@ -29,7 +29,7 @@ Set these environment variables in the host (local `.env.local`, or Vercel Proje
 
 Cookie flags: HttpOnly, Secure, SameSite=Lax, Path=/, Max-Age 8 hours.
 
-Sign out: `GET` or `POST` `/api/logout`.
+Sign out: `POST` `/api/logout` (GET does not clear the session — avoids logout CSRF via top-level navigation).
 
 Copy [`.env.example`](.env.example) to `.env.local` and fill in values locally. Never put real credentials in git, README, or examples.
 
