@@ -155,9 +155,6 @@ body {
 .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13.5px; }
 .skill-category strong { display: block; margin-bottom: 4px; }
 .skill-category p { margin: 0; color: var(--muted); }
-.matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
-.matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
-.matrix-table th { background: var(--btn-bg); font-weight: 600; }
 body.edit-mode #resume [contenteditable="true"] {
   outline: 1px dashed var(--edit-outline);
   border-radius: 3px; min-height: 1em;
@@ -308,10 +305,6 @@ tr, .skill-category, .job-header { break-inside: avoid; page-break-inside: avoid
     <div id="skills-editor"></div>
     <button type="button" class="add-btn" onclick="addSkill()">+ Add skill category</button>
 
-    <h4>Matrix rows</h4>
-    <div id="matrix-editor"></div>
-    <button type="button" class="add-btn" onclick="addMatrix()">+ Add matrix row</button>
-
     <h4>Education</h4>
     <div id="edu-editor"></div>
     <button type="button" class="add-btn" onclick="addEducation()">+ Add education</button>
@@ -333,213 +326,278 @@ tr, .skill-category, .job-header { break-inside: avoid; page-break-inside: avoid
 <script>
 const STORAGE_KEY = 'caio_cv_editor_v1';
 const DEFAULT_CV = {
-  name: "Caio Valerio Goulart Correia",
-  headline: {
-    en: "AI Specialist, Senior Data Engineer & Backend Developer",
-    pt: "Especialista em IA, Engenheiro de Dados Sênior & Desenvolvedor Backend"
+  "name": "Caio Valerio Goulart Correia",
+  "headline": {
+    "en": "AI Specialist · Data Engineer · Backend Developer",
+    "pt": "Especialista em IA · Engenheiro de Dados · Desenvolvedor Backend"
   },
-  location: { en: "Brazil (Remote)", pt: "Brasil (Remoto)" },
-  email: "caiovaleriogoulartcorreia@gmail.com",
-  phone: "+55 22 99784-7289",
-  github: "https://github.com/Caiolinooo",
-  linkedin: "https://linkedin.com/in/caio-goulart",
-  summary: {
-    en: "AI Specialist, Data Engineer, and Full-Stack Developer with a robust foundation in mechanical engineering and industrial automation, enabling a unique approach to solving complex architectural problems. Specialized in LLM fine-tuning (LoRA, QLoRA, DPO), PyTorch, Hugging Face ecosystem, local LLM serving and agentic tooling (MCP, vLLM, SGLang, llama.cpp), building highly scalable data pipelines, distributed systems, and robust backend architectures using Python, Java, and Node.js. Experienced in cloud infrastructure, container orchestration (Docker/Kubernetes), and automating CI/CD workflows for enterprise-grade AI solutions.",
-    pt: "Especialista em IA, Engenheiro de Dados e Desenvolvedor Full-Stack com sólida base em engenharia mecânica e automação industrial. Especializado em fine-tuning de LLMs (LoRA, QLoRA, DPO), ecossistema PyTorch e Hugging Face, serving local de LLMs e tooling agentic (MCP, vLLM, SGLang, llama.cpp), construção de pipelines de dados altamente escaláveis, sistemas distribuídos e arquiteturas de backend (Python, Java, Node.js). Experiência em infraestrutura em nuvem, orquestração de contêineres (Docker/Kubernetes) e automação de fluxos de CI/CD para soluções de IA em produção."
+  "location": {
+    "en": "Rio das Ostras, RJ — Brazil (Remote)",
+    "pt": "Rio das Ostras, RJ — Brasil (Remoto)"
   },
-  matrix: [
-    { skill: { en: "AI Engineering & LLMs (PyTorch, Hugging Face)", pt: "Engenharia de IA & LLMs (PyTorch, Hugging Face)" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "LLM Fine-Tuning & Quantization (LoRA, Unsloth, vLLM)", pt: "Fine-Tuning & Quantização de LLMs (LoRA, Unsloth, vLLM)" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Backend Development", pt: "Desenvolvimento Backend" }, years: { en: "9 years", pt: "9 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Python", pt: "Python" }, years: { en: "9 years", pt: "9 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "SQL & NoSQL", pt: "SQL & NoSQL" }, years: { en: "9 years (each)", pt: "9 anos (cada)" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "RESTful APIs", pt: "APIs RESTful" }, years: { en: "6 years", pt: "6 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Docker", pt: "Docker" }, years: { en: "6 years", pt: "6 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Data Engineering", pt: "Engenharia de Dados" }, years: { en: "5 years", pt: "5 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Node.js", pt: "Node.js" }, years: { en: "5 years", pt: "5 anos" }, level: { en: "Senior", pt: "Sênior" } },
-    { skill: { en: "Java (Spring Boot)", pt: "Java (Spring Boot)" }, years: { en: "4 years", pt: "4 anos" }, level: { en: "Mid / Senior", pt: "Pleno / Sênior" } },
-    { skill: { en: "AWS", pt: "AWS" }, years: { en: "4 years", pt: "4 anos" }, level: { en: "Mid", pt: "Pleno" } },
-    { skill: { en: "GraphQL", pt: "GraphQL" }, years: { en: "3 years", pt: "3 anos" }, level: { en: "Mid", pt: "Pleno" } },
-    { skill: { en: "Kubernetes", pt: "Kubernetes" }, years: { en: "3 years", pt: "3 anos" }, level: { en: "Mid", pt: "Pleno" } },
-    { skill: { en: "OCI Cloud", pt: "OCI Cloud" }, years: { en: "2 years", pt: "2 anos" }, level: { en: "Mid", pt: "Pleno" } }
-  ],
-  experience: [
+  "email": "caiovaleriogoulartcorreia@gmail.com",
+  "phone": "+55 22 99784-7289",
+  "github": "https://github.com/Caiolinooo",
+  "linkedin": "https://linkedin.com/in/caio-goulart",
+  "summary": {
+    "en": "AI Specialist and Backend/Data Engineer with 9+ years of technical experience, currently focused on LLM training, evaluation, and alignment for frontier models. Hands-on with SFT and preference optimization (DPO/RLHF) and parameter-efficient fine-tuning (LoRA/QLoRA) using PyTorch, Hugging Face, Unsloth, and Axolotl, plus local LLM serving and agentic tooling (vLLM, SGLang, llama.cpp, MCP) on dedicated NVIDIA hardware. Builds data-intensive products end to end: geospatial pipelines processing 100M+ point clouds, an HR platform serving 200+ employees under strict PII controls (LGPD), and RAG-based compliance auditing. Strong across Python, TypeScript/Node.js, and PostgreSQL, with cloud/DevOps delivery on AWS, Docker, Kubernetes, and GitHub Actions. Mechanical engineering background with a track record of turning complex industrial processes into reliable, measurable software. Fluent English (C1), experienced with international, remote-first teams.",
+    "pt": "Especialista em IA e Engenheiro Backend/Dados com mais de 9 anos de experiência técnica, atualmente focado em treinamento, avaliação e alinhamento de LLMs. Atuação prática com SFT e otimização por preferência (DPO/RLHF) e fine-tuning parameter-efficient (LoRA/QLoRA) usando PyTorch, Hugging Face, Unsloth e Axolotl, além de serving local de LLMs e tooling agentic (vLLM, SGLang, llama.cpp, MCP) em hardware NVIDIA dedicado. Constrói produtos data-intensive de ponta a ponta: pipelines geoespaciais com mais de 100 milhões de pontos, portal de RH para 200+ colaboradores com controles rigorosos de PII (LGPD) e auditoria de compliance baseada em RAG. Forte em Python, TypeScript/Node.js e PostgreSQL, com entregas de cloud/DevOps em AWS, Docker, Kubernetes e GitHub Actions. Formação em Engenharia Mecânica e histórico de transformar processos industriais complexos em software confiável e mensurável. Inglês fluente (C1), com experiência em times internacionais e remotos."
+  },
+  "experience": [
     {
-      title: { en: "AI Specialist", pt: "AI Specialist" },
-      meta: { en: "micro1 • Aug 2026 – Present", pt: "micro1 • Ago 2026 – Presente" },
-      bullets: {
-        en: [
-          "Drive the end-to-end development, fine-tuning, evaluation, and alignment of Large Language Models (LLMs), combining engineering principles with full-stack expertise to maximize algorithmic precision, logical reasoning, and code generation quality.",
-          "Conduct Supervised Fine-Tuning (SFT) and Direct Preference Optimization (DPO/RLHF) using PyTorch, Hugging Face (PEFT, LoRA/QLoRA), Unsloth, and Axolotl; perform adversarial testing to eliminate hallucinations and logic flaws.",
-          "Rigorously evaluate AI code generation across Python, TypeScript, Node.js, FastAPI, React, Next.js, and JavaFX, benchmarking data structure choices, dynamic execution, and complex API integrations.",
-          "Architect local LLM serving and agent harnesses on Windows/Linux with vLLM, SGLang, and llama.cpp on dedicated NVIDIA hardware (L4 GPU / 24GB VRAM), plus MCP tool servers for retrieval/graph tools; measure latency/throughput and iterate with custom eval harnesses.",
-          "Develop advanced prompt engineering frameworks, System Prompts, and tool-use chains to direct AI behavior, drastically improving code synthesis and enterprise IT problem-solving performance.",
-          "Curate high-quality training datasets and synthetic data pipelines (Self-Instruct, Evol-Instruct), establishing strict automated validation for dataset integrity, schema compliance, and model alignment."
+      "title": {
+        "en": "AI Specialist (Contract)",
+        "pt": "AI Specialist (Contrato)"
+      },
+      "meta": {
+        "en": "micro1 • Aug 2026 – Sep 2026 • Remote",
+        "pt": "micro1 • Ago 2026 – Set 2026 • Remoto"
+      },
+      "bullets": {
+        "en": [
+          "Trained and evaluated LLMs for frontier-model programs, running Supervised Fine-Tuning (SFT) and preference optimization (DPO/RLHF) with PyTorch, Hugging Face PEFT (LoRA/QLoRA), Unsloth, and Axolotl.",
+          "Ran adversarial testing (red teaming) to surface hallucinations, logic flaws, and bias, feeding corrections back into training datasets.",
+          "Reviewed and benchmarked AI-generated code across Python, TypeScript, Node.js, FastAPI, React, Next.js, and JavaFX — assessing data-structure choices, execution behavior, and complex API integrations.",
+          "Deployed local LLM serving and agent harnesses on Windows/Linux (vLLM, SGLang, llama.cpp) on dedicated NVIDIA hardware (L4 GPU, 24GB VRAM), plus MCP tool servers for retrieval and graph tools; measured latency/throughput with custom evaluation harnesses.",
+          "Curated high-quality training and synthetic datasets (Self-Instruct, Evol-Instruct) with automated validation for dataset integrity, schema compliance, and model alignment."
         ],
-        pt: [
-          "Atuação no desenvolvimento ponta a ponta, fine-tuning, avaliação e alinhamento de Modelos de Linguagem de Grande Escala (LLMs), unindo engenharia e experiência full-stack para maximizar precisão algorítmica, raciocínio lógico e geração de código.",
-          "Conduz sessões de Fine-Tuning Supervisionado (SFT) e Otimização de Preferência (DPO/RLHF) utilizando PyTorch, Hugging Face (PEFT, LoRA/QLoRA), Unsloth e Axolotl, executando testes adversariais para eliminar alucinações e falhas de lógica.",
-          "Valida rigorosamente a eficácia da IA na geração e refatoração de código em Python, TypeScript, Node.js, FastAPI, React, Next.js e JavaFX, avaliando desde estruturas de dados até a integração de APIs.",
-          "Arquiteta serving local de LLMs e harnesses agentic em Windows/Linux com vLLM, SGLang e llama.cpp em hardware dedicado NVIDIA (L4 GPU / 24GB VRAM), além de servidores de ferramentas MCP para retrieval/grafo; mede latência/throughput e itera com harnesses de eval customizados.",
-          "Desenvolve estruturas avançadas de Engenharia de Prompt, System Prompts e cadeias de uso de ferramentas para modelar o comportamento da IA, otimizando a resolução de problemas de software e infraestrutura.",
-          "Gera e cura pipelines de dados de treinamento e dados sintéticos de alta qualidade (Self-Instruct, Evol-Instruct), estabelecendo validações automatizadas de integridade, conformidade e alinhamento."
+        "pt": [
+          "Treinou e avaliou LLMs para programas de frontier models, executando Fine-Tuning Supervisionado (SFT) e otimização de preferência (DPO/RLHF) com PyTorch, Hugging Face PEFT (LoRA/QLoRA), Unsloth e Axolotl.",
+          "Executou testes adversariais (red teaming) para identificar alucinações, falhas de lógica e vieses, realimentando correções nos datasets de treinamento.",
+          "Revisou e fez benchmarking de código gerado por IA em Python, TypeScript, Node.js, FastAPI, React, Next.js e JavaFX — avaliando escolhas de estruturas de dados, comportamento de execução e integrações complexas de APIs.",
+          "Implantou serving local de LLMs e agent harnesses em Windows/Linux (vLLM, SGLang, llama.cpp) em hardware NVIDIA dedicado (GPU L4, 24GB VRAM), além de servidores de ferramentas MCP para retrieval e grafos; mediu latência/throughput com harnesses de avaliação customizados.",
+          "Curou datasets de treinamento e dados sintéticos de alta qualidade (Self-Instruct, Evol-Instruct) com validação automatizada de integridade, conformidade de schema e alinhamento do modelo."
         ]
       }
     },
     {
-      title: { en: "Full-Stack Developer & DevOps Engineer", pt: "Desenvolvedor Full-Stack & Engenheiro DevOps" },
-      meta: { en: "ABZ Serviços • Jan 2025 – Present", pt: "ABZ Serviços • Jan 2025 – Presente" },
-      bullets: {
-        en: [
-          "Architected and developed EmployeeHub (Portal ABZ), an internal HR / operations portal used by 200+ employees. Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) on Vercel — DP, crew management, Man Schedule, e-Social, vacation, reimbursement, and ACL; suite also includes Timesheet (PontoFlow) and Invoice ABZ.",
-          "Led the cloud migration of legacy on-premise Windows Servers (2012-2025), achieving 80% completion with zero downtime in production environments.",
-          "Engineered and deployed a WireGuard-based VPN infrastructure for 50+ remote employees, drastically reducing support tickets and connection failures.",
-          "Implemented end-to-end CI/CD pipelines using GitHub Actions, Docker containerization, and administered virtualized environments across Proxmox and AWS S3."
+      "title": {
+        "en": "Full-Stack Developer & DevOps Engineer",
+        "pt": "Desenvolvedor Full-Stack & Engenheiro DevOps"
+      },
+      "meta": {
+        "en": "ABZ Serviços • Mar 2025 – Present • Rio das Ostras, RJ",
+        "pt": "ABZ Serviços • Mar 2025 – Presente • Rio das Ostras, RJ"
+      },
+      "bullets": {
+        "en": [
+          "Architected and shipped EmployeeHub (portal.groupabz.com), an HR/operations portal used by 200+ employees — personnel records, crew management, e-Social, vacation, reimbursement, and ACL — on Next.js 15, TypeScript, and Supabase (PostgreSQL with Row-Level Security) on Vercel; reduced HR manual workload by ~40% and approval time by ~95%.",
+          "Delivered the ABZ product suite around the portal: PontoFlow (bilingual offshore timesheets with manager approval, field annotations, and deadline locks enforced in UI and RLS), Invoice ABZ (FastAPI/SQLAlchemy engine turning payroll and charge-rate spreadsheets into client invoices), and Ticket-Manager (support automation via Microsoft Graph).",
+          "Led the cloud migration of legacy on-premise Windows Servers (2012–2025), reaching 80% completion with zero production downtime.",
+          "Deployed a WireGuard-based VPN for 50+ remote employees, sharply reducing connectivity support tickets and failures.",
+          "Implemented end-to-end CI/CD with GitHub Actions and Docker; administered Proxmox virtualization and AWS S3."
         ],
-        pt: [
-          "Arquitetou e desenvolveu o EmployeeHub (Portal ABZ), um portal interno de RH / operações utilizado por mais de 200 colaboradores. Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) na Vercel — DP, gestão de tripulantes, Man Schedule, e-Social, férias, reembolso e ACL; a suíte também inclui Timesheet (PontoFlow) e Invoice ABZ.",
-          "Liderou a migração para a nuvem de servidores Windows Server locais (2012-2025), atingindo 80% de conclusão com zero tempo de inatividade em ambientes de produção.",
-          "Projetou e implantou uma infraestrutura de VPN baseada em WireGuard para mais de 50 funcionários remotos, reduzindo drasticamente tickets de suporte e falhas de conexão.",
-          "Implementou pipelines de CI/CD de ponta a ponta utilizando GitHub Actions, conteinerização com Docker e administrou ambientes virtualizados via Proxmox e AWS S3."
+        "pt": [
+          "Arquitetou e entregou o EmployeeHub (portal.groupabz.com), portal de RH/operações usado por mais de 200 colaboradores — registros de pessoal, gestão de tripulantes, e-Social, férias, reembolso e ACL — em Next.js 15, TypeScript e Supabase (PostgreSQL com Row-Level Security) na Vercel; reduziu a carga manual do RH em ~40% e o tempo de aprovação em ~95%.",
+          "Entregou a suíte de produtos ABZ em torno do portal: PontoFlow (timesheets offshore bilíngues com aprovação de gestor, anotações por campo e bloqueio de prazo na UI e no RLS), Invoice ABZ (motor FastAPI/SQLAlchemy que transforma planilhas de folha e charge-rate em invoices de clientes) e Ticket-Manager (automação de suporte via Microsoft Graph).",
+          "Liderou a migração para nuvem de Windows Servers legados on-premise (2012–2025), atingindo 80% de conclusão com zero downtime em produção.",
+          "Implantou VPN baseada em WireGuard para mais de 50 colaboradores remotos, reduzindo drasticamente tickets de suporte e falhas de conexão.",
+          "Implementou CI/CD de ponta a ponta com GitHub Actions e Docker; administrou virtualização Proxmox e AWS S3."
         ]
       }
     },
     {
-      title: { en: "Python Developer & Spatial Data Engineer", pt: "Desenvolvedor Python & Engenheiro de Dados Espaciais" },
-      meta: { en: "BRTech3D • Mar 2024 – Mar 2025", pt: "BRTech3D • Mar 2024 – Mar 2025" },
-      bullets: {
-        en: [
-          "Developed high-performance Python scripts (NumPy, SciPy, Open3D) to automate geospatial data pipelines, optimizing the processing of dense point clouds (100+ million data points).",
-          "Implemented data routines that increased processing speed by 40% and improved data compression, yielding significant resource and time savings across dozens of projects.",
-          "Modeled and optimized PostgreSQL databases utilizing the PostGIS extension for complex spatial queries and seamless integration via REST APIs."
+      "title": {
+        "en": "Python Developer & Spatial Data Engineer",
+        "pt": "Desenvolvedor Python & Engenheiro de Dados Espaciais"
+      },
+      "meta": {
+        "en": "BRTech3D • Mar 2024 – Mar 2025 • Macaé, RJ",
+        "pt": "BRTech3D • Mar 2024 – Mar 2025 • Macaé, RJ"
+      },
+      "bullets": {
+        "en": [
+          "Built high-performance Python pipelines (NumPy, SciPy, Open3D) automating geospatial data processing for dense point clouds (100M+ points), increasing processing speed by 40% and improving data compression across dozens of projects.",
+          "Modeled and optimized PostgreSQL databases with the PostGIS extension for complex spatial queries, integrated via REST APIs."
         ],
-        pt: [
-          "Desenvolveu scripts de alta performance em Python (NumPy, SciPy, Open3D) para automatizar pipelines de dados geoespaciais, otimizando o processamento de nuvens de pontos densas (mais de 100 milhões de pontos de dados).",
-          "Implementou rotinas de dados que aumentaram a velocidade de processamento em 40% e melhoraram a compressão de dados, gerando economias significativas de tempo e recursos em dezenas de projetos.",
-          "Modelou e otimizou bancos de dados PostgreSQL utilizando a extensão PostGIS para consultas espaciais complexas e integração perfeita via APIs REST."
+        "pt": [
+          "Construiu pipelines Python de alta performance (NumPy, SciPy, Open3D) automatizando o processamento de dados geoespaciais de nuvens de pontos densas (100M+ pontos), aumentando a velocidade de processamento em 40% e melhorando a compressão de dados em dezenas de projetos.",
+          "Modelou e otimizou bancos PostgreSQL com a extensão PostGIS para consultas espaciais complexas, integrados via APIs REST."
         ]
       }
     },
     {
-      title: { en: "Topographical Survey Operator III (Laser Scanning)", pt: "Operador de Levantamento Topográfico III (Laser Scanning)" },
-      meta: { en: "Master Engineering Services • Aug 2023 – Mar 2024", pt: "Master Engineering Services • Ago 2023 – Mar 2024" },
-      bullets: {
-        en: [
+      "title": {
+        "en": "Topographical Survey Operator III (Laser Scanning)",
+        "pt": "Operador de Levantamento Topográfico III (Laser Scanning)"
+      },
+      "meta": {
+        "en": "Laser Master Engineering Services • Aug 2023 – Mar 2024",
+        "pt": "Laser Master Engineering Services • Ago 2023 – Mar 2024"
+      },
+      "bullets": {
+        "en": [
           "Operated high-precision 3D laser scanning equipment (Leica) in complex industrial and archaeological environments.",
           "Led field campaign planning and technical documentation, ensuring millimeter-level precision and data backup redundancy for large-scale data collection."
         ],
-        pt: [
+        "pt": [
           "Operou equipamentos de escaneamento a laser 3D de alta precisão (Leica) em ambientes industriais e arqueológicos complexos.",
           "Liderou o planejamento de campanhas de campo e documentação técnica, garantindo precisão milimétrica e redundância de backup de dados em coletas de grande escala."
         ]
       }
     },
     {
-      title: { en: "Topographical Survey Operator II", pt: "Operador de Levantamento Topográfico II" },
-      meta: { en: "BRTech3D • Dec 2022 – Aug 2023", pt: "BRTech3D • Dez 2022 – Ago 2023" },
-      bullets: {
-        en: ["Executed field data collection using Leica TLS equipment and introduced Quality Assurance (QA) processes for outlier cleaning and multiple scan registration."],
-        pt: ["Executou a coleta de dados em campo utilizando equipamentos Leica TLS e introduziu processos de Garantia da Qualidade (QA) para limpeza de outliers e registro de múltiplos escaneamentos."]
+      "title": {
+        "en": "Topographical Survey Operator II",
+        "pt": "Operador de Levantamento Topográfico II"
+      },
+      "meta": {
+        "en": "BRTech3D • Dec 2022 – Aug 2023",
+        "pt": "BRTech3D • Dez 2022 – Ago 2023"
+      },
+      "bullets": {
+        "en": [
+          "Executed field data collection using Leica TLS equipment and introduced Quality Assurance (QA) processes for outlier cleaning and multiple scan registration."
+        ],
+        "pt": [
+          "Executou a coleta de dados em campo utilizando equipamentos Leica TLS e introduziu processos de Garantia da Qualidade (QA) para limpeza de outliers e registro de múltiplos escaneamentos."
+        ]
       }
     },
     {
-      title: { en: "Technical Documentation & Support Specialist", pt: "Especialista em Documentação Técnica e Suporte" },
-      meta: { en: "SmartStore / Jackkk Connection • Mar 2021 – Dec 2022", pt: "SmartStore / Jackkk Connection • Mar 2021 – Dez 2022" },
-      bullets: {
-        en: [
+      "title": {
+        "en": "Technical Documentation & Support Specialist",
+        "pt": "Especialista em Documentação Técnica e Suporte"
+      },
+      "meta": {
+        "en": "SmartStore / Jackkk Connection • Mar 2021 – Dec 2022",
+        "pt": "SmartStore / Jackkk Connection • Mar 2021 – Dez 2022"
+      },
+      "bullets": {
+        "en": [
           "Produced 50+ bilingual technical manuals and system specifications for international clients.",
           "Provided advanced pre-sales support and detailed hardware/software architecture mapping for complex business proposals."
         ],
-        pt: [
+        "pt": [
           "Produziu mais de 50 manuais técnicos bilíngues e especificações de sistemas para clientes internacionais.",
           "Forneceu suporte avançado de pré-vendas e mapeamento detalhado de arquitetura de hardware/software para propostas comerciais complexas."
         ]
       }
     },
     {
-      title: { en: "Training Specialist & Automation Technician", pt: "Especialista em Treinamento e Técnico em Automação" },
-      meta: { en: "Jackkk Connection Comercial • May 2017 – Mar 2021", pt: "Jackkk Connection Comercial • Mai 2017 – Mar 2021" },
-      bullets: {
-        en: [
+      "title": {
+        "en": "Training Specialist & Automation Technician",
+        "pt": "Especialista em Treinamento e Técnico em Automação"
+      },
+      "meta": {
+        "en": "Jackkk Connection Comercial • May 2017 – Mar 2021",
+        "pt": "Jackkk Connection Comercial • Mai 2017 – Mar 2021"
+      },
+      "bullets": {
+        "en": [
           "Coordinated and delivered technical training for over 500 professionals in PLCs, hydraulics, and industrial automation.",
           "Developed educational simulations and managed B2B technical sales, building direct relationships with international suppliers."
         ],
-        pt: [
+        "pt": [
           "Coordenou e ministrou treinamentos técnicos para mais de 500 profissionais em CLPs, hidráulica e automação industrial.",
           "Desenvolveu simulações educacionais e gerenciou vendas técnicas B2B, construindo relacionamento direto com fornecedores internacionais."
         ]
       }
     },
     {
-      title: { en: "Technical Team Lead & Specialized Support", pt: "Líder de Equipe Técnica e Suporte Especializado" },
-      meta: { en: "Diesel Line Cambuí • Aug 2016 – May 2017", pt: "Diesel Line Cambuí • Ago 2016 – Mai 2017" },
-      bullets: {
-        en: [
+      "title": {
+        "en": "Technical Team Lead & Specialized Support",
+        "pt": "Líder de Equipe Técnica e Suporte Especializado"
+      },
+      "meta": {
+        "en": "Diesel Line Cambuí • Aug 2016 – May 2017",
+        "pt": "Diesel Line Cambuí • Ago 2016 – Mai 2017"
+      },
+      "bullets": {
+        "en": [
           "Led specialized field teams in the maintenance of large-scale engines and turbines (CAT, Cummins, MAK).",
           "Managed English-language technical support tickets for international clients and formally documented failure analysis processes."
         ],
-        pt: [
+        "pt": [
           "Liderou equipes de campo especializadas na manutenção de motores e turbinas de grande porte (CAT, Cummins, MAK).",
           "Gerenciou tickets de suporte técnico em inglês para clientes internacionais e documentou formalmente processos de análise de falhas."
         ]
       }
     },
     {
-      title: { en: "Apprentice Technician", pt: "Técnico Aprendiz" },
-      meta: { en: "Diesel Line Cambuí • Oct 2015 – Aug 2016", pt: "Diesel Line Cambuí • Out 2015 – Ago 2016" },
-      bullets: {
-        en: ["Began career providing support to commercial processes, CRM management, and strict application of compliance procedures for diesel and gas systems maintenance."],
-        pt: ["Iniciou a carreira prestando suporte a processos comerciais, gestão de CRM e aplicação estrita de procedimentos de conformidade para manutenção de sistemas a diesel e gás."]
+      "title": {
+        "en": "Apprentice Technician",
+        "pt": "Técnico Aprendiz"
+      },
+      "meta": {
+        "en": "Diesel Line Cambuí • Oct 2015 – Aug 2016",
+        "pt": "Diesel Line Cambuí • Out 2015 – Ago 2016"
+      },
+      "bullets": {
+        "en": [
+          "Began career providing support to commercial processes, CRM management, and strict application of compliance procedures for diesel and gas systems maintenance."
+        ],
+        "pt": [
+          "Iniciou a carreira prestando suporte a processos comerciais, gestão de CRM e aplicação estrita de procedimentos de conformidade para manutenção de sistemas a diesel e gás."
+        ]
       }
     }
   ],
-  projects: [
+  "projects": [
     {
-      title: { en: "CloudSec & FinOps Compliance Auditor", pt: "CloudSec & FinOps Compliance Auditor" },
-      meta: { en: "Portfolio Product • 2026", pt: "Produto de Portfólio • 2026" },
-      live: "https://cloudsec-finops-auditor.vercel.app",
-      repo: "https://github.com/Caiolinooo/cloudsec-finops-auditor",
-      bullets: {
-        en: [
+      "title": {
+        "en": "CloudSec & FinOps Compliance Auditor",
+        "pt": "CloudSec & FinOps Compliance Auditor"
+      },
+      "meta": {
+        "en": "Portfolio Product • 2026",
+        "pt": "Produto de Portfólio • 2026"
+      },
+      "live": "https://cloudsec-finops-auditor.vercel.app",
+      "repo": "https://github.com/Caiolinooo/cloudsec-finops-auditor",
+      "bullets": {
+        "en": [
           "Production-oriented compliance auditor that evaluates cloud architecture scenarios against CIS / SOC 2 / FinOps-style policies, returning structured risk, cost-impact, citations, and remediation steps.",
           "Stack: Next.js (App Router) + TypeScript + Tailwind on Vercel; hybrid RAG (BM25 + TF-IDF + Reciprocal Rank Fusion) over versioned policies/*.md; structured Gemini audits (gemini-3.8-flash → gemini-3.6-flash fallback with 503 retry); bilingual EN/PT UI; Vitest unit tests and CI evaluation pipeline."
         ],
-        pt: [
+        "pt": [
           "Auditor de conformidade orientado a produção que avalia cenários de arquitetura em nuvem contra políticas no estilo CIS / SOC 2 / FinOps, retornando risco estruturado, impacto de custo, citações e passos de remediação.",
           "Stack: Next.js (App Router) + TypeScript + Tailwind na Vercel; RAG híbrido (BM25 + TF-IDF + Reciprocal Rank Fusion) sobre policies/*.md versionadas; auditorias estruturadas via Gemini (gemini-3.8-flash → fallback gemini-3.6-flash com retry em 503); UI bilíngue EN/PT; testes Vitest e pipeline de avaliação em CI."
         ]
       }
     },
-        {
-      title: { en: "Portal ABZ (EmployeeHub)", pt: "Portal ABZ (EmployeeHub)" },
-      meta: { en: "ABZ Serviços · Internal HR / Operations Portal · Live", pt: "ABZ Serviços · Portal interno de RH / Operações · Live" },
-      live: "https://employee-hub-kappa-flame.vercel.app",
-      repo: "https://github.com/Caiolinooo/EmployeeHub",
-      bullets: {
-        en: [
-          "Built the ABZ Group corporate portal (EmployeeHub / Painel ABZ) covering DP, crew management, Man Schedule, e-Social, vacation, reimbursement, and ACL — people and offshore schedules as the operational source of truth.",
-          "Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) on Vercel; payroll/folha derived from portal embarkation data with WK Radar sync, printable payslips, and audited reversible schedule edits.",
+    {
+      "title": {
+        "en": "Portal ABZ (EmployeeHub)",
+        "pt": "Portal ABZ (EmployeeHub)"
+      },
+      "meta": {
+        "en": "ABZ Serviços · Internal HR / Operations Portal · Live",
+        "pt": "ABZ Serviços · Portal interno de RH / Operações · Live"
+      },
+      "live": "https://portal.groupabz.com",
+      "repo": "https://github.com/Caiolinooo/EmployeeHub",
+      "bullets": {
+        "en": [
+          "Built the ABZ Group corporate portal (EmployeeHub / Painel ABZ) covering personnel records (DP), crew management, Man Schedule, e-Social, vacation, reimbursement, and ACL — the operational source of truth for people and offshore schedules.",
+          "Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) on Vercel; payroll derived from portal embarkation data with WK Radar sync, printable payslips, and audited, reversible schedule edits.",
           "Integrates with the ABZ suite: identity/collaborator data feeds Timesheet (PontoFlow) sync paths; payroll/charge-rate outputs feed Invoice generation for clients."
         ],
-        pt: [
-          "Construiu o portal corporativo da ABZ Group (EmployeeHub / Painel ABZ) cobrindo DP, gestão de tripulantes, Man Schedule, e-Social, férias, reembolso e ACL — pessoas e escalas offshore como fonte operacional de verdade.",
+        "pt": [
+          "Construiu o portal corporativo da ABZ Group (EmployeeHub / Painel ABZ) cobrindo registros de pessoal (DP), gestão de tripulantes, Man Schedule, e-Social, férias, reembolso e ACL — a fonte operacional de verdade para pessoas e escalas offshore.",
           "Stack: Next.js 15 + TypeScript + Supabase (PostgreSQL/RLS) na Vercel; folha derivada dos embarques do portal com sync WK Radar, contracheque imprimível e edições de escala auditadas/reversíveis.",
           "Integra a suíte ABZ: identidade/colaboradores alimentam o Timesheet (PontoFlow); saídas de folha/charge-rate alimentam a geração de Invoice para clientes."
         ]
       }
     },
     {
-      title: { en: "PontoFlow (Timesheet Manager)", pt: "PontoFlow (Timesheet Manager)" },
-      meta: { en: "ABZ Group · Timesheet + mobile · Standalone (EmployeeHub-ready)", pt: "ABZ Group · Timesheet + mobile · Standalone (pronto para EmployeeHub)" },
-      live: "",
-      repo: "https://github.com/Caiolinooo/PontoFlow",
-      bullets: {
-        en: [
+      "title": {
+        "en": "PontoFlow (Timesheet Manager)",
+        "pt": "PontoFlow (Timesheet Manager)"
+      },
+      "meta": {
+        "en": "ABZ Group · Timesheet + mobile · Standalone (EmployeeHub-ready)",
+        "pt": "ABZ Group · Timesheet + mobile · Standalone (pronto para EmployeeHub)"
+      },
+      "live": "https://ponto-flow.vercel.app",
+      "repo": "https://github.com/Caiolinooo/PontoFlow",
+      "bullets": {
+        "en": [
           "Delivered PontoFlow, a bilingual (pt-BR/en-GB) timesheet system for offshore crew with manager approval, field-level annotations, and monthly deadline lock enforced in UI and RLS.",
           "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; email/cron reminders (T-7…T); mobile companion; multi-tenant admin (invites, per-tenant SMTP).",
           "Built standalone with EmployeeHub-ready sync (HMAC-authenticated import/export) so collaborator identity and timesheet periods can align with the Portal ABZ suite."
         ],
-        pt: [
+        "pt": [
           "Entregou o PontoFlow, um sistema de timesheet bilíngue (pt-BR/en-GB) para tripulação offshore com aprovação de gestores, anotações por campo e bloqueio de prazo mensal aplicado na UI e no RLS.",
           "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; lembretes por e-mail/cron (T-7…T); companion mobile; admin multi-tenant (convites, SMTP por tenant).",
           "Construído standalone com sync pronto para EmployeeHub (import/export autenticado por HMAC) para alinhar identidade de colaboradores e períodos de timesheet com a suíte Portal ABZ."
@@ -547,65 +605,139 @@ const DEFAULT_CV = {
       }
     },
     {
-      title: { en: "Invoice ABZ (Payroll → Invoice)", pt: "Invoice ABZ (Folha → Invoice)" },
-      meta: { en: "ABZ Group / ABZ International · Finance automation", pt: "ABZ Group / ABZ International · Automação financeira" },
-      live: "",
-      repo: "https://github.com/Caiolinooo/invoice_abz",
-      bullets: {
-        en: [
+      "title": {
+        "en": "Invoice ABZ (Payroll → Invoice)",
+        "pt": "Invoice ABZ (Folha → Invoice)"
+      },
+      "meta": {
+        "en": "ABZ Group / ABZ International · Finance automation (private repo)",
+        "pt": "ABZ Group / ABZ International · Automação financeira (repo privado)"
+      },
+      "live": "",
+      "repo": "",
+      "bullets": {
+        "en": [
           "Built a multi-company Invoice engine that turns payroll/charge-rate spreadsheets into client invoices (FMS, OMEGA, Jifmar vessels) with automatic client detection and parser routing.",
           "Stack: FastAPI + SQLAlchemy + SQLite + OpenPyXL; preview → invoice number/date → per-person invoices or ZIP; isolated dev/prod databases.",
           "Closes the ABZ financial loop: Portal/folha and charge-rate data become standardized invoices for ABZ Group and ABZ International without rewriting code per client."
         ],
-        pt: [
+        "pt": [
           "Construiu um motor multi-empresa de Invoice que transforma planilhas de folha/charge-rate em invoices por cliente (FMS, OMEGA, embarcações Jifmar) com detecção automática de cliente e roteamento de parsers.",
           "Stack: FastAPI + SQLAlchemy + SQLite + OpenPyXL; preview → número/data da invoice → invoices por pessoa ou ZIP; bancos de dados dev/prod isolados.",
           "Fecha o loop financeiro da ABZ: dados de Portal/folha e charge-rate viram invoices padronizadas para ABZ Group e ABZ International sem reescrever código por cliente."
         ]
       }
     },
-{
-      title: { en: "Model Context Protocol (MCP) / Knowledge Graph", pt: "Model Context Protocol (MCP) / Grafo de Conhecimento" },
-      meta: { en: "Personal / Local AI stack", pt: "Pessoal / Stack de IA local" },
-      live: "",
-      repo: "",
-      bullets: {
-        en: ["Built MCP tool servers over a local knowledge graph (Python + SQLite/FTS indexing) so agents retrieve structured neighborhoods instead of stuffing raw context into prompts.", "Wired tool-calling loops to OpenAI-compatible local serving (vLLM / SGLang) and llama.cpp for low-latency/offline paths; custom harnesses for multi-step agents, retries, and tool-success eval."],
-        pt: ["Construiu servidores de ferramentas MCP sobre um grafo de conhecimento local (Python + indexação SQLite/FTS) para que agentes recuperem vizinhanças estruturadas em vez de empurrar contexto bruto no prompt.", "Conectou loops de tool-calling a serving local OpenAI-compatible (vLLM / SGLang) e llama.cpp para caminhos de baixa latência/offline; harnesses customizados para agentes multi-step, retries e eval de sucesso de ferramentas."]
+    {
+      "title": {
+        "en": "Model Context Protocol (MCP) / Knowledge Graph",
+        "pt": "Model Context Protocol (MCP) / Grafo de Conhecimento"
+      },
+      "meta": {
+        "en": "Personal / Local AI stack",
+        "pt": "Pessoal / Stack de IA local"
+      },
+      "live": "",
+      "repo": "https://github.com/Caiolinooo/sglang-commander",
+      "bullets": {
+        "en": [
+          "Built MCP tool servers over a local knowledge graph (Python + SQLite/FTS indexing) so agents retrieve structured neighborhoods instead of stuffing raw context into prompts.",
+          "Wired tool-calling loops to OpenAI-compatible local serving (vLLM / SGLang) and llama.cpp for low-latency/offline paths; custom harnesses for multi-step agents, retries, and tool-success eval. Includes SGLang Commander (repo link), a desktop + web GUI to manage SGLang inference servers."
+        ],
+        "pt": [
+          "Construiu servidores de ferramentas MCP sobre um grafo de conhecimento local (Python + indexação SQLite/FTS) para que agentes recuperem vizinhanças estruturadas em vez de empurrar contexto bruto no prompt.",
+          "Conectou loops de tool-calling a serving local OpenAI-compatible (vLLM / SGLang) e llama.cpp para caminhos de baixa latência/offline; harnesses customizados para agentes multi-step, retries e eval de sucesso de ferramentas. Inclui o SGLang Commander (link do repo), GUI desktop + web para gerenciar servidores de inferência SGLang."
+        ]
       }
     }
   ],
-  skills: [
+  "skills": [
     {
-      cat: { en: "AI & LLM Engineering", pt: "Engenharia de IA & LLMs" },
-      items: { en: "PyTorch, Hugging Face (PEFT, LoRA/QLoRA, TRL), DeepSpeed, Unsloth, llama.cpp, vLLM, SGLang, Model Context Protocol (MCP), custom agent harnesses / tool-calling, LangChain, LlamaIndex, Triton Inference, Synthetic Data Generation.", pt: "PyTorch, Hugging Face (PEFT, LoRA/QLoRA, TRL), DeepSpeed, Unsloth, llama.cpp, vLLM, SGLang, Model Context Protocol (MCP), harnesses agentic / tool-calling customizados, LangChain, LlamaIndex, Triton Inference, Geração de Dados Sintéticos." }
+      "cat": {
+        "en": "AI & LLM Engineering",
+        "pt": "Engenharia de IA & LLMs"
+      },
+      "items": {
+        "en": "PyTorch, Hugging Face (Transformers, PEFT, TRL), LoRA/QLoRA, Unsloth, Axolotl, DeepSpeed, SFT, DPO, RLHF, LLM evaluation & red teaming, synthetic data generation (Self-Instruct, Evol-Instruct), RAG, LangChain, LlamaIndex, vLLM, SGLang, llama.cpp, NVIDIA Triton Inference Server, Model Context Protocol (MCP), agent harnesses / tool calling.",
+        "pt": "PyTorch, Hugging Face (Transformers, PEFT, TRL), LoRA/QLoRA, Unsloth, Axolotl, DeepSpeed, SFT, DPO, RLHF, avaliação de LLMs & red teaming, geração de dados sintéticos (Self-Instruct, Evol-Instruct), RAG, LangChain, LlamaIndex, vLLM, SGLang, llama.cpp, NVIDIA Triton Inference Server, Model Context Protocol (MCP), agent harnesses / tool calling."
+      }
     },
     {
-      cat: { en: "Backend & Data Engineering", pt: "Engenharia de Dados e Backend" },
-      items: { en: "Python 3 (NumPy, SciPy), Java (Spring Boot), Node.js, Express, TypeScript, REST & GraphQL APIs, JWT Auth.", pt: "Python 3 (NumPy, SciPy), Java (Spring Boot), Node.js, Express, TypeScript, APIs REST & GraphQL, Autenticação JWT." }
+      "cat": {
+        "en": "Backend",
+        "pt": "Backend"
+      },
+      "items": {
+        "en": "Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), Node.js, Express, TypeScript, Java (Spring Boot), Go (automation scripting), REST, GraphQL, JWT.",
+        "pt": "Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), Node.js, Express, TypeScript, Java (Spring Boot), Go (scripts de automação), REST, GraphQL, JWT."
+      }
     },
     {
-      cat: { en: "Cloud & DevOps", pt: "Cloud & DevOps" },
-      items: { en: "Docker, Kubernetes (Concepts), AWS S3, Linux (Ubuntu/CentOS), Proxmox, WireGuard VPN, Cloudflare, Vercel, Next.js.", pt: "Docker, Kubernetes (Conceitos), AWS S3, Linux (Ubuntu/CentOS), Proxmox, WireGuard VPN, Cloudflare, Vercel, Next.js." }
+      "cat": {
+        "en": "Frontend",
+        "pt": "Frontend"
+      },
+      "items": {
+        "en": "Next.js 15 (App Router), React, Tailwind CSS.",
+        "pt": "Next.js 15 (App Router), React, Tailwind CSS."
+      }
     },
     {
-      cat: { en: "Databases & CI/CD", pt: "Bancos de Dados & CI/CD" },
-      items: { en: "PostgreSQL, PostGIS, SQLite, NoSQL, GitHub Actions (CI/CD), Git, Advanced Scripting (PowerShell/Python), Vitest.", pt: "PostgreSQL, PostGIS, SQLite, NoSQL, GitHub Actions (CI/CD), Git, Scripting Avançado (PowerShell/Python), Vitest." }
+      "cat": {
+        "en": "Data & Databases",
+        "pt": "Dados & Bancos de Dados"
+      },
+      "items": {
+        "en": "PostgreSQL, PostGIS, Supabase (Row-Level Security), SQLite (FTS5), NoSQL, ETL/data pipelines, data lakes, geospatial & point-cloud processing.",
+        "pt": "PostgreSQL, PostGIS, Supabase (Row-Level Security), SQLite (FTS5), NoSQL, pipelines de dados/ETL, data lakes, processamento geoespacial & de nuvens de pontos."
+      }
+    },
+    {
+      "cat": {
+        "en": "Cloud & DevOps",
+        "pt": "Cloud & DevOps"
+      },
+      "items": {
+        "en": "AWS (S3), Docker, Kubernetes, Terraform, GitHub Actions (CI/CD), Vercel, Cloudflare, Proxmox, WireGuard VPN, Linux (Ubuntu/CentOS), Windows Server, PowerShell, Microsoft Graph API.",
+        "pt": "AWS (S3), Docker, Kubernetes, Terraform, GitHub Actions (CI/CD), Vercel, Cloudflare, Proxmox, WireGuard VPN, Linux (Ubuntu/CentOS), Windows Server, PowerShell, Microsoft Graph API."
+      }
+    },
+    {
+      "cat": {
+        "en": "Testing & QA",
+        "pt": "Testes & QA"
+      },
+      "items": {
+        "en": "Vitest, CI evaluation pipelines, automated dataset validation, schema compliance checks, code review.",
+        "pt": "Vitest, pipelines de avaliação em CI, validação automatizada de datasets, verificação de conformidade de schema, code review."
+      }
     }
   ],
-  education: [
+  "education": [
     {
-      title: { en: "B.S. in Mechanical Engineering (7th Semester)", pt: "Bacharelado em Engenharia Mecânica (7º Semestre)" },
-      meta: { en: "UniFatecie • Jan 2024 – Present", pt: "UniFatecie • Jan 2024 – Presente" }
+      "title": {
+        "en": "B.S. in Mechanical Engineering (in progress)",
+        "pt": "Bacharelado em Engenharia Mecânica (em andamento)"
+      },
+      "meta": {
+        "en": "UniFatecie • May 2024 – May 2027 (expected)",
+        "pt": "UniFatecie • Mai 2024 – Mai 2027 (previsão)"
+      }
     },
     {
-      title: { en: "Technical Diploma in Industrial Automation", pt: "Técnico em Automação Industrial" },
-      meta: { en: "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016", pt: "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016" }
+      "title": {
+        "en": "Technical Diploma in Industrial Automation",
+        "pt": "Técnico em Automação Industrial"
+      },
+      "meta": {
+        "en": "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016",
+        "pt": "ETP Escola Técnica Brasil • Jan 2014 – Jan 2016"
+      }
     }
   ],
-  languages: {
-    en: "<strong>Portuguese:</strong> Native | <strong>English:</strong> Fluent (Technical proficiency and conversational, C1) | <strong>Spanish/Italian:</strong> Advanced technical reading.",
-    pt: "<strong>Português:</strong> Nativo | <strong>Inglês:</strong> Fluente (Proficiência técnica e conversacional, C1) | <strong>Espanhol/Italiano:</strong> Leitura técnica avançada."
+  "languages": {
+    "en": "<strong>Portuguese:</strong> Native | <strong>English:</strong> Fluent (C1 — technical and conversational) | <strong>Spanish / Italian:</strong> Professional working proficiency, advanced technical reading.",
+    "pt": "<strong>Português:</strong> Nativo | <strong>Inglês:</strong> Fluente (C1 — técnico e conversacional) | <strong>Espanhol / Italiano:</strong> Proficiência profissional, leitura técnica avançada."
   }
 };
 
@@ -617,15 +749,11 @@ let suppressPanelSync = false;
 
 const T = {
   en: {
-    matrix: "Core Competencies & Experience Matrix",
-    skill: "Skill / Technology", years: "Years of Experience", level: "Level",
     exp: "Professional Experience", projects: "Relevant Projects",
     skills: "Technical Skills", edu: "Education", langs: "Languages",
     live: "Live", repo: "Repo"
   },
   pt: {
-    matrix: "Competências Principais & Matriz de Experiência",
-    skill: "Habilidade / Tecnologia", years: "Anos de Experiência", level: "Nível",
     exp: "Experiência Profissional", projects: "Projetos Relevantes",
     skills: "Habilidades Técnicas", edu: "Formação Acadêmica", langs: "Idiomas",
     live: "Live", repo: "Repo"
@@ -747,18 +875,6 @@ function renderSectionEditors(){
       <div class="row-actions"><button type="button" class="rm" onclick="removeItem('skills',${i})">Remove</button></div>
     </div>`).join('');
 
-  const mx = document.getElementById('matrix-editor');
-  mx.innerHTML = cv.matrix.map((r,i)=>`
-    <div class="item-card">
-      <div class="field"><label>Skill EN</label><input value="${esc(r.skill.en)}" oninput="cv.matrix[${i}].skill.en=this.value;scheduleSave();renderResume()"></div>
-      <div class="field"><label>Skill PT</label><input value="${esc(r.skill.pt)}" oninput="cv.matrix[${i}].skill.pt=this.value;scheduleSave();renderResume()"></div>
-      <div class="field"><label>Years EN</label><input value="${esc(r.years.en)}" oninput="cv.matrix[${i}].years.en=this.value;scheduleSave();renderResume()"></div>
-      <div class="field"><label>Years PT</label><input value="${esc(r.years.pt)}" oninput="cv.matrix[${i}].years.pt=this.value;scheduleSave();renderResume()"></div>
-      <div class="field"><label>Level EN</label><input value="${esc(r.level.en)}" oninput="cv.matrix[${i}].level.en=this.value;scheduleSave();renderResume()"></div>
-      <div class="field"><label>Level PT</label><input value="${esc(r.level.pt)}" oninput="cv.matrix[${i}].level.pt=this.value;scheduleSave();renderResume()"></div>
-      <div class="row-actions"><button type="button" class="rm" onclick="removeItem('matrix',${i})">Remove</button></div>
-    </div>`).join('');
-
   const edu = document.getElementById('edu-editor');
   edu.innerHTML = cv.education.map((e,i)=>`
     <div class="item-card">
@@ -790,10 +906,6 @@ function addSkill(){
   cv.skills.push({cat:{en:'New Category',pt:'Nova Categoria'}, items:{en:'Skill list',pt:'Lista de skills'}});
   scheduleSave(); renderAll(); toast('Skill category added');
 }
-function addMatrix(){
-  cv.matrix.push({skill:{en:'Technology',pt:'Tecnologia'}, years:{en:'1 year',pt:'1 ano'}, level:{en:'Mid',pt:'Pleno'}});
-  scheduleSave(); renderAll(); toast('Matrix row added');
-}
 function addEducation(){
   cv.education.push({title:{en:'Program',pt:'Curso'}, meta:{en:'Institution • Dates',pt:'Instituição • Datas'}});
   scheduleSave(); renderAll(); toast('Education added');
@@ -820,13 +932,6 @@ function renderResume(){
   const L = lang;
   const gh = githubLabel(cv.github);
   const li = githubLabel(cv.linkedin);
-
-  const matrixRows = cv.matrix.map((r,i)=>`
-    <tr>
-      <td>${ce(`matrix.${i}.skill.${L}`, esc(r.skill[L]))}</td>
-      <td>${ce(`matrix.${i}.years.${L}`, esc(r.years[L]))}</td>
-      <td>${ce(`matrix.${i}.level.${L}`, esc(r.level[L]))}</td>
-    </tr>`).join('');
 
   const jobs = cv.experience.map((job,i)=>{
     const bullets = (job.bullets[L]||[]).map((b,bi)=>`<li>${ce(`experience.${i}.bullets.${L}.${bi}`, esc(b))}</li>`).join('');
@@ -883,13 +988,6 @@ function renderResume(){
       </div>
     </header>
     <div class="summary"><p>${ce(`summary.${L}`, esc(cv.summary[L]))}</p></div>
-    <section>
-      <h3>${t.matrix}</h3>
-      <table class="matrix-table">
-        <thead><tr><th>${t.skill}</th><th>${t.years}</th><th>${t.level}</th></tr></thead>
-        <tbody>${matrixRows}</tbody>
-      </table>
-    </section>
     <section><h3>${t.exp}</h3>${jobs}</section>
     <section><h3>${t.projects}</h3>${projects}</section>
     <section><h3>${t.skills}</h3><div class="skills-grid">${skills}</div></section>
@@ -1011,9 +1109,6 @@ h3{font-size:14px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px 
 .job-details{margin:0;padding-left:18px;font-size:13.5px;} .job-details li{margin-bottom:6px;}
 .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:13.5px;}
 .skill-category strong{display:block;margin-bottom:4px;} .skill-category p{margin:0;color:var(--muted);}
-.matrix-table{width:100%;border-collapse:collapse;font-size:13px;}
-.matrix-table th,.matrix-table td{border:1px solid var(--border);padding:6px 10px;text-align:left;}
-.matrix-table th{background:var(--btn-bg);font-weight:600;}
 @media print{@page{size:A4;margin:1.4cm 1.1cm;} body{padding:0;} .job,tr,.skill-category{break-inside:avoid;page-break-inside:avoid;} h3,.job-header{break-after:avoid;page-break-after:avoid;break-inside:avoid;page-break-inside:avoid;} section{break-inside:auto;page-break-inside:auto;} a{color:#000;text-decoration:none;} }
 </style>
 </head>
