@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-06
+
+- CV tailored (EN/PT `DEFAULT_CV`) for backend / developer-tools Software Engineer roles (JD keywords: TypeScript, Node.js, APIs, SDKs, CLI, auth, rate limits).
+- Headline: "Backend Engineer (TypeScript/Node.js) · APIs & Developer Tools · AI Specialist".
+- Summary rewritten to lead with building/maintaining APIs and developer-facing tools: 600+ API routes (EmployeeHub), JWT + 2FA + RLS/ACL authorization, cross-product API contracts (HMAC sync), retry/fallback on rate-limit/503, open-source developer tools.
+- ABZ experience: new bullets for the Node.js/TypeScript API layer (600+ REST routes, JWT, 2FA, RLS/ACL, LGPD) and the PontoFlow↔EmployeeHub API contract; VPN bullet merged into CI/CD.
+- BRTech3D: REST API bullet now states APIs were designed and maintained, not just "integrated".
+- Projects: MCP project retitled "Developer Tools — MCP Servers & SGLang Commander (Open Source)"; CloudSec bullet makes 503/rate-limit retry explicit; PontoFlow stack names the Node.js server runtime.
+- Skills (Backend): added API design & contracts, authentication & authorization (JWT, 2FA, RLS, ACL, HMAC), resilience patterns (retries, fallback, rate-limit/503 handling).
+- Regenerated sample PDFs (EN/PT) via Chromium export.
+
 ## 2026-10-01
 
 - CV data refresh (EN/PT `DEFAULT_CV`): headline "AI Specialist · Data Engineer · Backend Developer"; new summaries focused on LLM training/evaluation (SFT, DPO/RLHF, LoRA/QLoRA, red teaming) + backend/data engineering.

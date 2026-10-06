@@ -328,8 +328,8 @@ const STORAGE_KEY = 'caio_cv_editor_v1';
 const DEFAULT_CV = {
   "name": "Caio Valerio Goulart Correia",
   "headline": {
-    "en": "AI Specialist · Data Engineer · Backend Developer",
-    "pt": "Especialista em IA · Engenheiro de Dados · Desenvolvedor Backend"
+    "en": "Backend Engineer (TypeScript/Node.js) · APIs & Developer Tools · AI Specialist",
+    "pt": "Engenheiro Backend (TypeScript/Node.js) · APIs e Ferramentas para Devs · Especialista em IA"
   },
   "location": {
     "en": "Rio das Ostras, RJ — Brazil (Remote)",
@@ -340,8 +340,8 @@ const DEFAULT_CV = {
   "github": "https://github.com/Caiolinooo",
   "linkedin": "https://linkedin.com/in/caio-goulart",
   "summary": {
-    "en": "AI Specialist and Backend/Data Engineer with 9+ years of technical experience, currently focused on LLM training, evaluation, and alignment for frontier models. Hands-on with SFT and preference optimization (DPO/RLHF) and parameter-efficient fine-tuning (LoRA/QLoRA) using PyTorch, Hugging Face, Unsloth, and Axolotl, plus local LLM serving and agentic tooling (vLLM, SGLang, llama.cpp, MCP) on dedicated NVIDIA hardware. Builds data-intensive products end to end: geospatial pipelines processing 100M+ point clouds, an HR platform serving 200+ employees under strict PII controls (LGPD), and RAG-based compliance auditing. Strong across Python, TypeScript/Node.js, and PostgreSQL, with cloud/DevOps delivery on AWS, Docker, Kubernetes, and GitHub Actions. Mechanical engineering background with a track record of turning complex industrial processes into reliable, measurable software. Fluent English (C1), experienced with international, remote-first teams.",
-    "pt": "Especialista em IA e Engenheiro Backend/Dados com mais de 9 anos de experiência técnica, atualmente focado em treinamento, avaliação e alinhamento de LLMs. Atuação prática com SFT e otimização por preferência (DPO/RLHF) e fine-tuning parameter-efficient (LoRA/QLoRA) usando PyTorch, Hugging Face, Unsloth e Axolotl, além de serving local de LLMs e tooling agentic (vLLM, SGLang, llama.cpp, MCP) em hardware NVIDIA dedicado. Constrói produtos data-intensive de ponta a ponta: pipelines geoespaciais com mais de 100 milhões de pontos, portal de RH para 200+ colaboradores com controles rigorosos de PII (LGPD) e auditoria de compliance baseada em RAG. Forte em Python, TypeScript/Node.js e PostgreSQL, com entregas de cloud/DevOps em AWS, Docker, Kubernetes e GitHub Actions. Formação em Engenharia Mecânica e histórico de transformar processos industriais complexos em software confiável e mensurável. Inglês fluente (C1), com experiência em times internacionais e remotos."
+    "en": "Backend engineer with 9+ years of technical experience building and maintaining APIs, services, and developer-facing tools — primarily in TypeScript and Node.js, with deep Python alongside. Shipped and operates a production HR/operations platform (200+ employees) whose Node.js/TypeScript backend exposes 600+ API routes secured by JWT authentication, two-factor authentication, and role-based authorization (PostgreSQL Row-Level Security + ACL) under strict LGPD/PII constraints. Defines cross-product API contracts (HMAC-authenticated sync between systems) and hardens third-party API integrations with retries and fallback on rate-limit/503 responses. Maintains open-source developer tools on GitHub, including MCP tool servers and an SGLang inference-server manager. AI depth: LLM training and evaluation (SFT, DPO/RLHF, LoRA/QLoRA), local serving (vLLM, SGLang, llama.cpp), and RAG. PostgreSQL/Supabase, Docker, GitHub Actions CI/CD, AWS. Fluent English (C1), remote-first experience with international teams. Mechanical engineering background.",
+    "pt": "Engenheiro backend com mais de 9 anos de experiência técnica construindo e mantendo APIs, serviços e ferramentas para desenvolvedores — principalmente em TypeScript e Node.js, com Python profundo em paralelo. Entregou e opera uma plataforma de RH/operações em produção (200+ colaboradores) cujo backend Node.js/TypeScript expõe mais de 600 rotas de API protegidas por autenticação JWT, autenticação em dois fatores e autorização baseada em papéis (Row-Level Security + ACL) sob restrições rigorosas de LGPD/PII. Define contratos de API entre produtos (sync autenticado via HMAC entre sistemas) e robustece integrações com APIs de terceiros com retries e fallback em respostas de rate-limit/503. Mantém ferramentas de desenvolvedor open source no GitHub, incluindo servidores de ferramentas MCP e um gerenciador de servidores de inferência SGLang. Profundidade em IA: treinamento e avaliação de LLMs (SFT, DPO/RLHF, LoRA/QLoRA), serving local (vLLM, SGLang, llama.cpp) e RAG. PostgreSQL/Supabase, Docker, CI/CD com GitHub Actions, AWS. Inglês fluente (C1), experiência remota com times internacionais. Formação em Engenharia Mecânica."
   },
   "experience": [
     {
@@ -382,17 +382,19 @@ const DEFAULT_CV = {
       "bullets": {
         "en": [
           "Architected and shipped EmployeeHub (portal.groupabz.com), an HR/operations portal used by 200+ employees — personnel records, crew management, e-Social, vacation, reimbursement, and ACL — on Next.js 15, TypeScript, and Supabase (PostgreSQL with Row-Level Security) on Vercel; reduced HR manual workload by ~40% and approval time by ~95%.",
+          "Built and maintains the platform's Node.js/TypeScript backend — 600+ REST API routes (Next.js App Router) with JWT authentication, two-factor authentication (2FA), and role-based authorization via PostgreSQL Row-Level Security and ACL, protecting sensitive HR/PII data under LGPD.",
           "Delivered the ABZ product suite around the portal: PontoFlow (bilingual offshore timesheets with manager approval, field annotations, and deadline locks enforced in UI and RLS), Invoice ABZ (FastAPI/SQLAlchemy engine turning payroll and charge-rate spreadsheets into client invoices), and Ticket-Manager (support automation via Microsoft Graph).",
+          "Defined the cross-product API contract (HMAC-authenticated import/export) between the portal and the PontoFlow timesheet product, keeping collaborator identity and period behavior consistent across both systems.",
           "Led the cloud migration of legacy on-premise Windows Servers (2012–2025), reaching 80% completion with zero production downtime.",
-          "Deployed a WireGuard-based VPN for 50+ remote employees, sharply reducing connectivity support tickets and failures.",
-          "Implemented end-to-end CI/CD with GitHub Actions and Docker; administered Proxmox virtualization and AWS S3."
+          "Implemented end-to-end CI/CD with GitHub Actions and Docker, administered Proxmox virtualization and AWS S3, and deployed a WireGuard VPN for 50+ remote employees — sharply reducing connectivity support tickets."
         ],
         "pt": [
           "Arquitetou e entregou o EmployeeHub (portal.groupabz.com), portal de RH/operações usado por mais de 200 colaboradores — registros de pessoal, gestão de tripulantes, e-Social, férias, reembolso e ACL — em Next.js 15, TypeScript e Supabase (PostgreSQL com Row-Level Security) na Vercel; reduziu a carga manual do RH em ~40% e o tempo de aprovação em ~95%.",
+          "Construiu e mantém o backend Node.js/TypeScript da plataforma — mais de 600 rotas de API REST (Next.js App Router) com autenticação JWT, autenticação em dois fatores (2FA) e autorização baseada em papéis via Row-Level Security e ACL, protegendo dados sensíveis de RH/PII sob LGPD.",
           "Entregou a suíte de produtos ABZ em torno do portal: PontoFlow (timesheets offshore bilíngues com aprovação de gestor, anotações por campo e bloqueio de prazo na UI e no RLS), Invoice ABZ (motor FastAPI/SQLAlchemy que transforma planilhas de folha e charge-rate em invoices de clientes) e Ticket-Manager (automação de suporte via Microsoft Graph).",
+          "Definiu o contrato de API entre produtos (import/export autenticado via HMAC) entre o portal e o produto de timesheet PontoFlow, mantendo identidade de colaboradores e comportamento de períodos consistente nos dois sistemas.",
           "Liderou a migração para nuvem de Windows Servers legados on-premise (2012–2025), atingindo 80% de conclusão com zero downtime em produção.",
-          "Implantou VPN baseada em WireGuard para mais de 50 colaboradores remotos, reduzindo drasticamente tickets de suporte e falhas de conexão.",
-          "Implementou CI/CD de ponta a ponta com GitHub Actions e Docker; administrou virtualização Proxmox e AWS S3."
+          "Implementou CI/CD de ponta a ponta com GitHub Actions e Docker, administrou virtualização Proxmox e AWS S3 e implantou VPN WireGuard para mais de 50 colaboradores remotos — reduzindo drasticamente tickets de suporte de conectividade."
         ]
       }
     },
@@ -408,11 +410,11 @@ const DEFAULT_CV = {
       "bullets": {
         "en": [
           "Built high-performance Python pipelines (NumPy, SciPy, Open3D) automating geospatial data processing for dense point clouds (100M+ points), increasing processing speed by 40% and improving data compression across dozens of projects.",
-          "Modeled and optimized PostgreSQL databases with the PostGIS extension for complex spatial queries, integrated via REST APIs."
+          "Modeled and optimized PostgreSQL databases with the PostGIS extension for complex spatial queries, designing and maintaining the REST APIs that exposed them to internal processing pipelines."
         ],
         "pt": [
           "Construiu pipelines Python de alta performance (NumPy, SciPy, Open3D) automatizando o processamento de dados geoespaciais de nuvens de pontos densas (100M+ pontos), aumentando a velocidade de processamento em 40% e melhorando a compressão de dados em dezenas de projetos.",
-          "Modelou e otimizou bancos PostgreSQL com a extensão PostGIS para consultas espaciais complexas, integrados via APIs REST."
+          "Modelou e otimizou bancos PostgreSQL com a extensão PostGIS para consultas espaciais complexas, projetando e mantendo as APIs REST que as expunham a pipelines internos de processamento."
         ]
       }
     },
@@ -548,11 +550,11 @@ const DEFAULT_CV = {
       "bullets": {
         "en": [
           "Production-oriented compliance auditor that evaluates cloud architecture scenarios against CIS / SOC 2 / FinOps-style policies, returning structured risk, cost-impact, citations, and remediation steps.",
-          "Stack: Next.js (App Router) + TypeScript + Tailwind on Vercel; hybrid RAG (BM25 + TF-IDF + Reciprocal Rank Fusion) over versioned policies/*.md; structured Gemini audits (gemini-3.8-flash → gemini-3.6-flash fallback with 503 retry); bilingual EN/PT UI; Vitest unit tests and CI evaluation pipeline."
+          "Stack: Next.js (App Router) + TypeScript + Tailwind on Vercel; hybrid RAG (BM25 + TF-IDF + Reciprocal Rank Fusion) over versioned policies/*.md; structured Gemini audits (gemini-3.8-flash → gemini-3.6-flash fallback with automatic retry on 503/rate-limit responses); bilingual EN/PT UI; Vitest unit tests and CI evaluation pipeline."
         ],
         "pt": [
           "Auditor de conformidade orientado a produção que avalia cenários de arquitetura em nuvem contra políticas no estilo CIS / SOC 2 / FinOps, retornando risco estruturado, impacto de custo, citações e passos de remediação.",
-          "Stack: Next.js (App Router) + TypeScript + Tailwind na Vercel; RAG híbrido (BM25 + TF-IDF + Reciprocal Rank Fusion) sobre policies/*.md versionadas; auditorias estruturadas via Gemini (gemini-3.8-flash → fallback gemini-3.6-flash com retry em 503); UI bilíngue EN/PT; testes Vitest e pipeline de avaliação em CI."
+          "Stack: Next.js (App Router) + TypeScript + Tailwind na Vercel; RAG híbrido (BM25 + TF-IDF + Reciprocal Rank Fusion) sobre policies/*.md versionadas; auditorias estruturadas via Gemini (gemini-3.8-flash → fallback gemini-3.6-flash com retry automático em respostas 503/rate-limit); UI bilíngue EN/PT; testes Vitest e pipeline de avaliação em CI."
         ]
       }
     },
@@ -594,12 +596,12 @@ const DEFAULT_CV = {
       "bullets": {
         "en": [
           "Delivered PontoFlow, a bilingual (pt-BR/en-GB) timesheet system for offshore crew with manager approval, field-level annotations, and monthly deadline lock enforced in UI and RLS.",
-          "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; email/cron reminders (T-7…T); mobile companion; multi-tenant admin (invites, per-tenant SMTP).",
+          "Stack: Next.js 15 + TypeScript (Node.js server runtime) + Supabase + Nodemailer; email/cron reminders (T-7…T); mobile companion; multi-tenant admin (invites, per-tenant SMTP).",
           "Built standalone with EmployeeHub-ready sync (HMAC-authenticated import/export) so collaborator identity and timesheet periods can align with the Portal ABZ suite."
         ],
         "pt": [
           "Entregou o PontoFlow, um sistema de timesheet bilíngue (pt-BR/en-GB) para tripulação offshore com aprovação de gestores, anotações por campo e bloqueio de prazo mensal aplicado na UI e no RLS.",
-          "Stack: Next.js 15 + TypeScript + Supabase + Nodemailer; lembretes por e-mail/cron (T-7…T); companion mobile; admin multi-tenant (convites, SMTP por tenant).",
+          "Stack: Next.js 15 + TypeScript (runtime Node.js no servidor) + Supabase + Nodemailer; lembretes por e-mail/cron (T-7…T); companion mobile; admin multi-tenant (convites, SMTP por tenant).",
           "Construído standalone com sync pronto para EmployeeHub (import/export autenticado por HMAC) para alinhar identidade de colaboradores e períodos de timesheet com a suíte Portal ABZ."
         ]
       }
@@ -630,8 +632,8 @@ const DEFAULT_CV = {
     },
     {
       "title": {
-        "en": "Model Context Protocol (MCP) / Knowledge Graph",
-        "pt": "Model Context Protocol (MCP) / Grafo de Conhecimento"
+        "en": "Developer Tools — MCP Servers & SGLang Commander (Open Source)",
+        "pt": "Ferramentas para Devs — Servidores MCP & SGLang Commander (Open Source)"
       },
       "meta": {
         "en": "Personal / Local AI stack",
@@ -642,11 +644,11 @@ const DEFAULT_CV = {
       "bullets": {
         "en": [
           "Built MCP tool servers over a local knowledge graph (Python + SQLite/FTS indexing) so agents retrieve structured neighborhoods instead of stuffing raw context into prompts.",
-          "Wired tool-calling loops to OpenAI-compatible local serving (vLLM / SGLang) and llama.cpp for low-latency/offline paths; custom harnesses for multi-step agents, retries, and tool-success eval. Includes SGLang Commander (repo link), a desktop + web GUI to manage SGLang inference servers."
+          "Wired tool-calling loops to OpenAI-compatible local serving (vLLM / SGLang) and llama.cpp for low-latency/offline paths; custom harnesses for multi-step agents, retries, and tool-success eval. Open source — includes SGLang Commander (repo link), a desktop + web GUI built for developers managing SGLang inference servers."
         ],
         "pt": [
           "Construiu servidores de ferramentas MCP sobre um grafo de conhecimento local (Python + indexação SQLite/FTS) para que agentes recuperem vizinhanças estruturadas em vez de empurrar contexto bruto no prompt.",
-          "Conectou loops de tool-calling a serving local OpenAI-compatible (vLLM / SGLang) e llama.cpp para caminhos de baixa latência/offline; harnesses customizados para agentes multi-step, retries e eval de sucesso de ferramentas. Inclui o SGLang Commander (link do repo), GUI desktop + web para gerenciar servidores de inferência SGLang."
+          "Conectou loops de tool-calling a serving local OpenAI-compatible (vLLM / SGLang) e llama.cpp para caminhos de baixa latência/offline; harnesses customizados para agentes multi-step, retries e eval de sucesso de ferramentas. Open source — inclui o SGLang Commander (link do repo), GUI desktop + web construída para desenvolvedores que gerenciam servidores de inferência SGLang."
         ]
       }
     }
@@ -668,8 +670,8 @@ const DEFAULT_CV = {
         "pt": "Backend"
       },
       "items": {
-        "en": "Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), Node.js, Express, TypeScript, Java (Spring Boot), Go (automation scripting), REST, GraphQL, JWT.",
-        "pt": "Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), Node.js, Express, TypeScript, Java (Spring Boot), Go (scripts de automação), REST, GraphQL, JWT."
+        "en": "TypeScript & Node.js (Next.js server runtime, REST API routes, Express, cron workers), Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), API design & cross-product API contracts, authentication & authorization (JWT, 2FA, RLS, ACL, HMAC), resilience patterns (retries, fallback, rate-limit/503 handling), GraphQL, Java (Spring Boot), Go (automation scripting).",
+        "pt": "TypeScript & Node.js (runtime server do Next.js, rotas de API REST, Express, cron workers), Python (FastAPI, SQLAlchemy, NumPy, SciPy, Open3D), design de APIs & contratos de API entre produtos, autenticação & autorização (JWT, 2FA, RLS, ACL, HMAC), padrões de resiliência (retries, fallback, tratamento de rate-limit/503), GraphQL, Java (Spring Boot), Go (scripts de automação)."
       }
     },
     {
